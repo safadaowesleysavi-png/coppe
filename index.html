@@ -3,46 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooper Leonel - Gestão Pro</title>
+    <title>Cooper Leonel - Gestão Ultra 2026</title>
     <style>
-        :root { --primary: #2d5a27; --docs: #2c3e50; --secondary: #9b59b6; --info: #2980b9; --success: #2ecc71; --danger: #e74c3c; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 50px; }
+        :root { 
+            --primary: #2d5a27; --secondary: #9b59b6; --success: #2ecc71; 
+            --danger: #e74c3c; --warning: #f39c12; --info: #2980b9; 
+            --notes: #7f8c8d; --bg: #f4f7f6; --text: #333;
+        }
         
-        .header-cooper { width: 100%; background: white; padding: 15px 0; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 50px; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Header & Slogan */
+        .header-cooper { width: 100%; background: white; padding: 20px 0; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .header-content { width: 90%; max-width: 800px; display: flex; justify-content: space-between; align-items: center; }
-        .header-text h1 { margin: 0; font-size: 1.5rem; color: var(--primary); }
-        .header-text p { margin: 0; font-size: 0.8rem; color: #666; font-style: italic; }
-        .logo-svg { width: 80px; height: 80px; }
+        .header-text h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
+        .header-text p { margin: 5px 0 0; font-size: 0.9rem; color: #666; font-style: italic; }
+        .logo-svg { width: 65px; height: 65px; }
 
-        .container { width: 90%; max-width: 600px; }
-        
-        /* ESTILO DAS ABAS RETRÁTEIS */
-        .card { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; overflow: hidden; border-top: 4px solid var(--primary); }
+        .container { width: 94%; max-width: 700px; }
+
+        /* Dashboard Resumo */
+        .dash-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .dash-item { background: white; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-bottom: 4px solid var(--primary); }
+        .dash-item span { display: block; font-size: 0.7rem; color: #888; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        .dash-item b { font-size: 1.1rem; }
+
+        /* Painel de Fechamento Mensal */
+        .month-panel { background: #2c3e50; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .month-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #455a64; padding-bottom: 10px; }
+        .month-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
+        .m-stat span { font-size: 0.7rem; opacity: 0.8; }
+        .m-stat div { font-weight: bold; font-size: 1rem; margin-top: 5px; }
+
+        /* Caixa & Gráfico */
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; border-top: 4px solid var(--primary); overflow: hidden; }
         .card-header { padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; }
-        .card-header h2 { font-size: 1.1rem; margin: 0; display: flex; align-items: center; gap: 8px; }
         .card-body { padding: 15px; display: none; border-top: 1px solid #eee; }
         .card.active .card-body { display: block; }
 
-        /* FINANCEIRO */
-        .saldo-txt { text-align: center; font-size: 2rem; font-weight: 800; color: var(--primary); margin: 5px 0; }
-        .chart-container { display: flex; align-items: flex-end; height: 40px; gap: 2px; border-bottom: 1px solid #eee; margin-bottom: 15px; }
-        .bar { background: var(--primary); flex: 1; opacity: 0.6; min-height: 2px; }
+        .chart-container { display: flex; align-items: flex-end; height: 80px; gap: 5px; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
+        .bar { background: var(--primary); flex: 1; min-height: 5px; border-radius: 3px 3px 0 0; position: relative; }
 
-        input, textarea { width: 100%; padding: 10px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
-        .search-box { background: #f0f7f0; border-color: #c6e6c6; margin-bottom: 15px; }
-        .btn-main { width: 100%; padding: 12px; border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; }
-        .btn-group { display: flex; gap: 8px; margin-bottom: 10px; }
-        .btn-in { background: var(--success); flex: 1; padding: 10px; border: none; border-radius: 6px; color: white; font-weight: bold; }
-        .btn-out { background: var(--danger); flex: 1; padding: 10px; border: none; border-radius: 6px; color: white; font-weight: bold; }
+        /* Inputs e Botões */
+        input, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 0.9rem; }
+        .btn-group { display: flex; gap: 10px; }
+        .btn-in { background: var(--success); color: white; flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        .btn-out { background: var(--danger); color: white; flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        .btn-main { width: 100%; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
 
-        ul { list-style: none; padding: 0; margin-top: 10px; }
+        /* Listas e Badges */
+        ul { list-style: none; padding: 0; margin: 0; }
         li { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
+        .days-badge { background: #eee; padding: 3px 8px; border-radius: 15px; font-size: 0.7rem; font-weight: bold; color: #555; }
+        .urgent-badge { background: var(--danger); color: white; }
+        .today-badge { background: var(--success); color: white; animation: pulse 1.5s infinite; }
         
-        .status-ball { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 8px; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.2); }
-        .st-on { background: var(--success); } .st-off { background: var(--danger); }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         
-        .btn-del { background: none; border: none; color: #c00; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
-        .action-link { text-decoration: none; color: var(--info); font-size: 0.8rem; font-weight: bold; margin-right: 10px; }
+        .pin-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #ccc; }
+        .pin-btn.active { color: var(--warning); }
+        .btn-del { color: var(--danger); border: none; background: none; cursor: pointer; font-weight: bold; padding: 5px; }
+
+        .status-ball { width: 12px; height: 12px; border-radius: 50%; display: inline-block; cursor: pointer; margin-right: 10px; }
+        .search-box { background: #fff; border: 2px solid #e1e8ed; margin-bottom: 15px; }
+
     </style>
 </head>
 <body>
@@ -65,138 +89,204 @@
 
     <div class="container">
         
-        <div class="card active" style="border-top-color: var(--primary);">
-            <div class="card-header"><h2>💰 Caixa e Gráfico</h2></div>
+        <div class="dash-row">
+            <div class="dash-item"><span>SALDO TOTAL</span><b id="d-saldo">R$ 0,00</b></div>
+            <div class="dash-item"><span>SÓCIOS</span><b id="d-socios">0</b></div>
+            <div class="dash-item"><span>PENDÊNCIAS</span><b id="d-metas">0</b></div>
+        </div>
+
+        <div class="month-panel">
+            <div class="month-header">
+                <b id="month-name">Resumo do Mês</b>
+                <button onclick="toggleMonthFilter()" id="btn-month" style="background:rgba(255,255,255,0.1); border:1px solid #fff; color:white; border-radius:5px; cursor:pointer; font-size:0.7rem; padding:4px 8px;">Mês Atual: OFF</button>
+            </div>
+            <div class="month-grid">
+                <div class="m-stat"><span>ENTRADAS</span><div id="m-in" style="color:var(--success)">+ R$ 0,00</div></div>
+                <div class="m-stat"><span>SAÍDAS</span><div id="m-out" style="color:var(--danger)">- R$ 0,00</div></div>
+                <div class="m-stat"><span>BALANÇO</span><div id="m-bal">R$ 0,00</div></div>
+            </div>
+        </div>
+
+        <div class="card active">
+            <div class="card-header" onclick="toggleCard(this)"><h2>💰 Caixa & Fluxo</h2><span>▼</span></div>
             <div class="card-body">
-                <div class="saldo-txt">R$ <span id="saldov">0,00</span></div>
                 <div class="chart-container" id="grafico"></div>
-                <input type="number" id="vfin" placeholder="Valor R$">
+                <input type="number" id="vfin" placeholder="Digite o valor R$">
                 <div class="btn-group">
-                    <button class="btn-in" onclick="f(1)">Entrada</button>
-                    <button class="btn-out" onclick="f(0)">Saída</button>
+                    <button class="btn-in" onclick="f(1)">ENTRADA (+)</button>
+                    <button class="btn-out" onclick="f(0)">SAÍDA (-)</button>
                 </div>
             </div>
         </div>
 
-        <div class="card" style="border-top-color: var(--info);">
-            <div class="card-header" onclick="toggleCard(this)"><h2>📢 Mural de Eventos</h2> <span>▼</span></div>
-            <div class="card-body">
-                <textarea id="msgT" placeholder="Aviso rápido..." rows="2"></textarea>
-                <button class="btn-main" style="background: var(--info);" onclick="add('msg')">Postar</button>
-                <ul id="lmsg"></ul>
-            </div>
-        </div>
+        <div id="abas-container"></div>
 
-        <div class="card" style="border-top-color: #f1c40f;">
-            <div class="card-header" onclick="toggleCard(this)"><h2>📝 Plano de Gestão</h2> <span>▼</span></div>
-            <div class="card-body">
-                <input type="text" id="pln" placeholder="Meta/Ação">
-                <button class="btn-main" style="background: #f1c40f; color: #333;" onclick="add('pl')">Adicionar</button>
-                <ul id="lpl"></ul>
-            </div>
+        <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button onclick="exportar()" style="background:#4a5568; color:white; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">📥 Baixar Backup</button>
+            <label style="background:#4a5568; color:white; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer; text-align:center;">
+                📤 Carregar Backup <input type="file" style="display:none" onchange="importar(event)">
+            </label>
         </div>
-
-        <div class="card" style="border-top-color: var(--docs);">
-            <div class="card-header" onclick="toggleCard(this)"><h2>👥 Associados</h2> <span>▼</span></div>
-            <div class="card-body">
-                <input type="text" class="search-box" id="qAs" onkeyup="render()" placeholder="🔍 Pesquisar associado...">
-                <input type="text" id="asn" placeholder="Nome">
-                <input type="text" id="asm" placeholder="Matrícula">
-                <input type="text" id="asl" placeholder="Link do Drive (Documentos)">
-                <button class="btn-main" style="background: var(--docs);" onclick="add('as')">Salvar Associado</button>
-                <ul id="las"></ul>
-            </div>
-        </div>
-
-        <div class="card" style="border-top-color: #e67e22;">
-            <div class="card-header" onclick="toggleCard(this)"><h2>📂 Documentos Gerais</h2> <span>▼</span></div>
-            <div class="card-body">
-                <input type="text" class="search-box" id="qDc" onkeyup="render()" placeholder="🔍 Pesquisar documento...">
-                <input type="text" id="dcn" placeholder="Título do Documento">
-                <input type="text" id="dcl" placeholder="Link do Google Drive">
-                <button class="btn-main" style="background: #e67e22;" onclick="add('dc')">Salvar Documento</button>
-                <ul id="ldc"></ul>
-            </div>
-        </div>
-
-        <div class="card" style="border-top-color: var(--secondary);">
-            <div class="card-header" onclick="toggleCard(this)"><h2>⚖️ Livro de Atas</h2> <span>▼</span></div>
-            <div class="card-body">
-                <input type="text" class="search-box" id="qAt" onkeyup="render()" placeholder="🔍 Pesquisar ata...">
-                <input type="text" id="atn" placeholder="Título/Nº da Ata">
-                <input type="text" id="atd" placeholder="Data (Ex: 09/05/2026)">
-                <input type="text" id="atl" placeholder="Link do Google Drive">
-                <button class="btn-main" style="background: var(--secondary);" onclick="add('at')">Registrar Ata</button>
-                <ul id="lat"></ul>
-            </div>
-        </div>
-
-        <button onclick="exportar()" style="background:#4a5568; color:white; border:none; padding:12px; width:100%; border-radius:6px; cursor:pointer; font-weight:bold; margin-top: 20px;">📥 Baixar Backup Geral</button>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('cp_final_v10')) || { s:0, hist:[0], as:[], pl:[], msg:[], dc:[], at:[] };
+        // Banco de Dados
+        let db = JSON.parse(localStorage.getItem('cooper_v2026')) || { 
+            s: 0, hist: [], as: [], pl: [], msg: [], dc: [], at: [], an: [], nt: [] 
+        };
         
-        function toggleCard(el) { el.parentElement.classList.toggle('active'); }
+        let filterOnlyCurrentMonth = false;
 
-        function render() {
-            document.getElementById('saldov').innerText = db.s.toLocaleString('pt-BR',{minimumFractionDigits:2});
-            const g = document.getElementById('grafico'); g.innerHTML = '';
-            db.hist.slice(-20).forEach(v => {
-                const b = document.createElement('div'); b.className = 'bar';
-                b.style.height = Math.max((v/(Math.max(...db.hist,100)))*100, 5) + '%'; g.appendChild(b);
+        const secoes = [
+            {id: 'msg', tit: '📢 Recados e Eventos', color: 'var(--info)', fields: [{id:'msgn', p:'Título do Recado'}, {id:'msgd', p:'Data do Evento (DD/MM/AAAA)'}]},
+            {id: 'as', tit: '👥 Associados', color: 'var(--docs)', fields: [{id:'asn', p:'Nome do Associado'}, {id:'asm', p:'Número do Associado'}, {id:'asl', p:'Link Drive'}]},
+            {id: 'nt', tit: '🧾 Notas e Registros', color: 'var(--notes)', fields: [{id:'ntn', p:'Título da Nota/Gasto'}, {id:'ntd', p:'Data (DD/MM/AAAA)'}, {id:'ntl', p:'Link da Nota'}]},
+            {id: 'dc', tit: '📂 Documentos Gerais', color: '#e67e22', fields: [{id:'dcn', p:'Título'}, {id:'dcl', p:'Link'}]},
+            {id: 'at', tit: '⚖️ Livro de Atas', color: 'var(--secondary)', fields: [{id:'atn', p:'Título/Nº'}, {id:'atd', p:'Data'}, {id:'atl', p:'Link'}]},
+            {id: 'pl', tit: '📝 Plano de Gestão', color: 'var(--warning)', fields: [{id:'pln', p:'Nova Meta'}]},
+            {id: 'an', tit: '🎂 Aniversariantes', color: '#e91e63', fields: [{id:'ann', p:'Nome'}, {id:'and', p:'Dia/Mês (DD/MM)'}]}
+        ];
+
+        function init() {
+            const container = document.getElementById('abas-container');
+            secoes.forEach(s => {
+                container.innerHTML += `
+                    <div class="card" style="border-top-color: ${s.color}">
+                        <div class="card-header" onclick="toggleCard(this)"><h2>${s.tit}</h2><span>▼</span></div>
+                        <div class="card-body">
+                            <input type="text" class="search-box" id="q-${s.id}" onkeyup="render()" placeholder="🔍 Pesquisar em ${s.tit}...">
+                            ${s.fields.map(f => `<input type="text" id="${f.id}" placeholder="${f.p}">`).join('')}
+                            <button class="btn-main" style="background:${s.color}" onclick="add('${s.id}')">Adicionar</button>
+                            <ul id="l-${s.id}" style="margin-top:15px"></ul>
+                        </div>
+                    </div>`;
             });
-
-            renderLista('lmsg', db.msg, 'msg', '');
-            renderLista('lpl', db.pl, 'pl', '');
-            renderLista('las', db.as, 'as', document.getElementById('qAs').value.toLowerCase());
-            renderLista('ldc', db.dc, 'dc', document.getElementById('qDc').value.toLowerCase());
-            renderLista('lat', db.at, 'at', document.getElementById('qAt').value.toLowerCase());
-
-            localStorage.setItem('cp_final_v10', JSON.stringify(db));
+            render();
         }
 
-        function renderLista(id, array, tipo, busca) {
-            const l = document.getElementById(id); l.innerHTML = '';
-            array.forEach((item, i) => {
+        function toggleCard(el) { el.parentElement.classList.toggle('active'); }
+        function toggleMonthFilter() { 
+            filterOnlyCurrentMonth = !filterOnlyCurrentMonth; 
+            document.getElementById('btn-month').innerText = `Mês Atual: ${filterOnlyCurrentMonth ? 'ON' : 'OFF'}`;
+            render();
+        }
+
+        // Cálculos de Dias
+        function getDiff(dataStr, isAniver = false) {
+            if(!dataStr) return null;
+            const hoje = new Date(); hoje.setHours(0,0,0,0);
+            const p = dataStr.split('/');
+            let alvo;
+            if(isAniver) {
+                alvo = new Date(hoje.getFullYear(), p[1]-1, p[0]);
+                if(alvo < hoje) alvo.setFullYear(hoje.getFullYear() + 1);
+            } else {
+                alvo = new Date(p[2], p[1]-1, p[0]);
+            }
+            return Math.ceil((alvo - hoje) / (1000 * 60 * 60 * 24));
+        }
+
+        function render() {
+            const agora = new Date();
+            const mesAtual = agora.getMonth();
+            const anoAtual = agora.getFullYear();
+
+            // Saldo Total
+            document.getElementById('d-saldo').innerText = `R$ ${db.s.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+            document.getElementById('d-socios').innerText = db.as.length;
+            document.getElementById('d-metas').innerText = db.pl.filter(x => !x.st).length;
+
+            // Gráfico e Resumo Mensal
+            let histFiltrado = db.hist;
+            if(filterOnlyCurrentMonth) {
+                histFiltrado = db.hist.filter(h => {
+                    const d = new Date(h.t);
+                    return d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
+                });
+            }
+
+            let somIn = histFiltrado.filter(h => h.v > 0).reduce((a,b) => a + b.v, 0);
+            let somOut = Math.abs(histFiltrado.filter(h => h.v < 0).reduce((a,b) => a + b.v, 0));
+            
+            document.getElementById('m-in').innerText = `+ R$ ${somIn.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+            document.getElementById('m-out').innerText = `- R$ ${somOut.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+            document.getElementById('m-bal').innerText = `R$ ${(somIn - somOut).toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+            document.getElementById('month-name').innerText = `Resumo de ${agora.toLocaleDateString('pt-BR', {month:'long'})}`;
+
+            const g = document.getElementById('grafico'); g.innerHTML = '';
+            const histGrafico = db.hist.slice(-20);
+            const maxVal = Math.max(...histGrafico.map(h => Math.abs(h.s)), 100);
+            histGrafico.forEach(h => {
+                const b = document.createElement('div'); b.className = 'bar';
+                b.style.height = (Math.abs(h.s) / maxVal * 100) + '%';
+                g.appendChild(b);
+            });
+
+            secoes.forEach(s => renderLista(s.id));
+            localStorage.setItem('cooper_v2026', JSON.stringify(db));
+        }
+
+        function renderLista(sid) {
+            const l = document.getElementById('l-'+sid);
+            const busca = document.getElementById('q-'+sid).value.toLowerCase();
+            l.innerHTML = '';
+
+            let itens = [...db[sid]].map((item, index) => ({...item, originalIndex: index}));
+            itens.sort((a,b) => (b.pinned === a.pinned) ? 0 : b.pinned ? 1 : -1);
+
+            itens.forEach(item => {
                 if (item.n.toLowerCase().includes(busca)) {
-                    let html = '';
-                    if(tipo === 'msg') html = `<div class="msg-text">📌 ${item.n}</div>`;
-                    if(tipo === 'pl') html = `<div><span class="status-ball ${item.st?'concluido':'processo'}" onclick="tst('pl',${i})"></span>${item.n}</div>`;
-                    if(tipo === 'as') html = `<div><span class="status-ball ${item.st?'st-on':'st-off'}" onclick="tst('as',${i})"></span><b>${item.n}</b><br><small>Mat: ${item.m}</small></div> <div class="actions"><a href="${item.l}" target="_blank" class="action-link">VER DOCS</a>`;
-                    if(tipo === 'dc') html = `<div><b>📄 ${item.n}</b></div> <div class="actions"><a href="${item.l}" target="_blank" class="action-link">ABRIR</a>`;
-                    if(tipo === 'at') html = `<div><b>⚖️ ${item.n}</b><br><small>Data: ${item.d}</small></div> <div class="actions"><a href="${item.l}" target="_blank" class="action-link">ABRIR</a>`;
+                    let badge = '';
+                    let diff = null;
+
+                    if(sid === 'msg') diff = getDiff(item.d, false);
+                    if(sid === 'an') diff = getDiff(item.d, true);
+
+                    if(diff !== null) {
+                        if(diff === 0) badge = `<span class="days-badge today-badge">HOJE!</span>`;
+                        else if(diff <= 2 && diff > 0) badge = `<span class="days-badge urgent-badge">Faltam ${diff}d</span>`;
+                        else if(diff > 0) badge = `<span class="days-badge">Faltam ${diff}d</span>`;
+                    }
+
+                    let h = `<button class="pin-btn ${item.pinned?'active':''}" onclick="togglePin('${sid}',${item.originalIndex})">📌</button>`;
                     
-                    l.innerHTML += `<li>${html}<button class="btn-del" onclick="rem('${tipo}',${i})">X</button></li>`;
+                    if(sid==='pl') h += `<div><span class="status-ball" style="background:${item.st?'var(--success)':'var(--warning)'}" onclick="tst('pl',${item.originalIndex})"></span>${item.n}</div>`;
+                    else if(sid==='an') h += `<div><b>${item.n}</b> ${badge}</div>`;
+                    else if(sid==='as') h += `<div><b>${item.n}</b><br><small>Nº: ${item.m}</small></div>${item.l !== '#' ? `<a href="${item.l}" target="_blank">🔗</a>` : ''}`;
+                    else h += `<div><b>${item.n}</b><br><small>${item.d || ''}</small> ${badge}</div>${item.l && item.l !== '#' ? `<a href="${item.l}" target="_blank">🔗</a>` : ''}`;
+                    
+                    l.innerHTML += `<li class="${item.pinned?'pinned':''}">${h}<button class="btn-del" onclick="rem('${sid}',${item.originalIndex})">×</button></li>`;
                 }
             });
         }
 
-        function f(type) {
-            const v = parseFloat(document.getElementById('vfin').value);
-            if(!v) return; db.s = type ? db.s + v : db.s - v;
-            db.hist.push(db.s); document.getElementById('vfin').value = ''; render();
-        }
-
-        function add(t) {
-            if(t==='msg') db.msg.push({n: document.getElementById('msgT').value});
-            if(t==='pl') db.pl.push({n: document.getElementById('pln').value, st: false});
-            if(t==='as') db.as.push({n: document.getElementById('asn').value, m: document.getElementById('asm').value, l: document.getElementById('asl').value || '#', st: true});
-            if(t==='dc') db.dc.push({n: document.getElementById('dcn').value, l: document.getElementById('dcl').value || '#'});
-            if(t==='at') db.at.push({n: document.getElementById('atn').value, d: document.getElementById('atd').value, l: document.getElementById('atl').value || '#'});
-            
-            ['msgT','pln','asn','asm','asl','dcn','dcl','atn','atd','atl'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+        function add(sid) {
+            let n = document.getElementById(sid+'n')?.value;
+            let d = document.getElementById(sid+'d')?.value;
+            let m = document.getElementById(sid+'m')?.value;
+            let l = document.getElementById(sid+'l')?.value || '#';
+            if(!n) return;
+            db[sid].push({n, d, m, l, pinned: false, st: sid==='as'});
             render();
+            secoes.find(x=>x.id===sid).fields.forEach(f => document.getElementById(f.id).value = '');
         }
 
-        function tst(t, i) { db[t][i].st = !db[t][i].st; render(); }
-        function rem(t, i) { if(confirm("Apagar?")) { db[t].splice(i,1); render(); } }
-        function exportar() {
-            const blob = new Blob([JSON.stringify(db)], {type: 'application/json'});
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = 'backup_cooper_completo.json'; a.click();
+        function f(t) { 
+            const v = parseFloat(document.getElementById('vfin').value); 
+            if(!v) return; 
+            db.s = t ? db.s+v : db.s-v; 
+            db.hist.push({v: t?v:-v, s: db.s, t: new Date().getTime()}); 
+            document.getElementById('vfin').value=''; 
+            render(); 
         }
-        render();
+
+        function togglePin(s, i) { db[s][i].pinned = !db[s][i].pinned; render(); }
+        function tst(s, i) { db[s][i].st = !db[s][i].st; render(); }
+        function rem(s, i) { if(confirm("Apagar item?")) { db[s].splice(i,1); render(); } }
+        function exportar() { const b = new Blob([JSON.stringify(db)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'cooper_leonel_backup.json'; a.click(); }
+        function importar(e) { const r = new FileReader(); r.onload = (ev) => { db = JSON.parse(ev.target.result); render(); alert("Backup Restaurado!"); }; r.readAsText(e.target.files[0]); }
+        
+        window.onload = init;
     </script>
 </body>
 </html>
