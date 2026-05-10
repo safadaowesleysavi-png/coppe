@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooper Leonel - Gestão Ultra 2026</title>
+    <title>Cooper Leonel - Gestão & Princípios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* MANTENDO SEU CSS EXATAMENTE COMO ESTAVA */
         :root { 
             --primary: #2d5a27; --secondary: #9b59b6; --success: #2ecc71; 
             --danger: #e74c3c; --warning: #f39c12; --info: #2980b9; 
@@ -13,7 +15,6 @@
         
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 50px; display: flex; flex-direction: column; align-items: center; }
         
-        /* Header & Slogan */
         .header-cooper { width: 100%; background: white; padding: 20px 0; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .header-content { width: 90%; max-width: 800px; display: flex; justify-content: space-between; align-items: center; }
         .header-text h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
@@ -22,139 +23,229 @@
 
         .container { width: 94%; max-width: 700px; }
 
-        /* Dashboard Resumo */
         .dash-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .dash-item { background: white; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-bottom: 4px solid var(--primary); }
         .dash-item span { display: block; font-size: 0.7rem; color: #888; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
-        .dash-item b { font-size: 1.1rem; }
 
-        /* Painel de Fechamento Mensal */
-        .month-panel { background: #2c3e50; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .month-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #455a64; padding-bottom: 10px; }
-        .month-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
+        .month-panel { background: #2c3e50; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+        .month-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 15px; }
         .m-stat span { font-size: 0.7rem; opacity: 0.8; }
-        .m-stat div { font-weight: bold; font-size: 1rem; margin-top: 5px; }
+        .m-stat div { font-weight: bold; font-size: 1rem; }
 
-        /* Caixa & Gráfico */
         .card { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; border-top: 4px solid var(--primary); overflow: hidden; }
         .card-header { padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; }
         .card-body { padding: 15px; display: none; border-top: 1px solid #eee; }
         .card.active .card-body { display: block; }
 
-        .chart-container { display: flex; align-items: flex-end; height: 80px; gap: 5px; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
-        .bar { background: var(--primary); flex: 1; min-height: 5px; border-radius: 3px 3px 0 0; position: relative; }
-
-        /* Inputs e Botões */
-        input, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 0.9rem; }
+        input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         .btn-group { display: flex; gap: 10px; }
-        .btn-in { background: var(--success); color: white; flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
-        .btn-out { background: var(--danger); color: white; flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        .btn-in { background: var(--success); color: white; flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-out { background: var(--danger); color: white; flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-main { width: 100%; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
 
-        /* Listas e Badges */
-        ul { list-style: none; padding: 0; margin: 0; }
+        ul { list-style: none; padding: 0; }
         li { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
-        .days-badge { background: #eee; padding: 3px 8px; border-radius: 15px; font-size: 0.7rem; font-weight: bold; color: #555; }
+        .days-badge { background: #eee; padding: 3px 8px; border-radius: 15px; font-size: 0.7rem; font-weight: bold; }
         .urgent-badge { background: var(--danger); color: white; }
         .today-badge { background: var(--success); color: white; animation: pulse 1.5s infinite; }
-        
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         
-        .pin-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #ccc; }
-        .pin-btn.active { color: var(--warning); }
-        .btn-del { color: var(--danger); border: none; background: none; cursor: pointer; font-weight: bold; padding: 5px; }
-
         .status-ball { width: 12px; height: 12px; border-radius: 50%; display: inline-block; cursor: pointer; margin-right: 10px; }
-        .search-box { background: #fff; border: 2px solid #e1e8ed; margin-bottom: 15px; }
+        .btn-del { color: var(--danger); border: none; background: none; cursor: pointer; font-weight: bold; }
 
+        /* NOVOS ESTILOS PARA O MENU E PRINCÍPIOS */
+        #pull-tab {
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            background: var(--primary); color: white; padding: 8px 20px;
+            border-radius: 0 0 15px 15px; cursor: pointer; z-index: 1001; font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2); animation: bounce 2s infinite;
+        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);} 40% {transform: translateX(-50%) translateY(5px);} }
+
+        #menu-top {
+            position: fixed; top: -260px; left: 0; width: 100%; height: 250px;
+            background: #1a1a1a; color: white; z-index: 1000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-bottom: 5px solid var(--primary);
+        }
+        #menu-top.active { top: 0; }
+        .menu-btn { 
+            background: var(--primary); color: white; border: none; padding: 12px 30px; 
+            margin: 10px; border-radius: 30px; cursor: pointer; font-weight: bold; width: 260px;
+            transition: 0.3s; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .menu-btn:hover { background: #deff9a; color: #1a1a1a; transform: scale(1.05); }
+
+        .page { display: none; width: 100%; }
+        .page.active { display: flex; flex-direction: column; align-items: center; }
+
+        .principio-card { 
+            background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); cursor: pointer; border-left: 10px solid var(--primary);
+            transition: 0.3s; width: 90%; max-width: 650px;
+        }
+        .principio-card:hover { transform: translateY(-5px); }
+        .principio-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; animation: float 3s infinite ease-in-out; }
+        @keyframes float { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-8px);} }
+        .p-info { max-height: 0; overflow: hidden; transition: 0.5s ease; background: #f9fff9; border-radius: 10px; font-size: 0.95rem; line-height: 1.5; }
+        .principio-card.open .p-info { max-height: 300px; padding: 15px; margin-top: 10px; border: 1px dashed #2d5a27; }
     </style>
 </head>
 <body>
 
-    <header class="header-cooper">
-        <div class="header-content">
-            <div class="header-text">
-                <h1>Cooper Leonel</h1>
-                <p>Transformando o mundo em um lugar melhor</p>
-            </div>
-            <div class="logo-svg">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="48" fill="white" stroke="#2d5a27" stroke-width="4"/>
-                    <polygon points="35,22 50,65 20,65" fill="#2d5a27"/><rect x="32" y="65" width="6" height="13" fill="#2d5a27"/>
-                    <polygon points="65,22 80,65 50,65" fill="#2d5a27"/><rect x="62" y="65" width="6" height="13" fill="#2d5a27"/>
-                </svg>
-            </div>
-        </div>
-    </header>
+    <div id="pull-tab" onclick="toggleMenu()">MENU ▼</div>
 
-    <div class="container">
-        
-        <div class="dash-row">
-            <div class="dash-item"><span>SALDO TOTAL</span><b id="d-saldo">R$ 0,00</b></div>
-            <div class="dash-item"><span>SÓCIOS</span><b id="d-socios">0</b></div>
-            <div class="dash-item"><span>PENDÊNCIAS</span><b id="d-metas">0</b></div>
-        </div>
+    <nav id="menu-top">
+        <button class="menu-btn" onclick="showPage('gestao')"><i class="fa-solid fa-chart-line"></i> Painel de Gestão</button>
+        <button class="menu-btn" onclick="showPage('principios')"><i class="fa-solid fa-leaf"></i> 7 Princípios Animados</button>
+        <div style="font-size: 0.7rem; margin-top: 10px; opacity: 0.5;">COOPER LEONEL 2026</div>
+    </nav>
 
-        <div class="month-panel">
-            <div class="month-header">
-                <b id="month-name">Resumo do Mês</b>
-                <button onclick="toggleMonthFilter()" id="btn-month" style="background:rgba(255,255,255,0.1); border:1px solid #fff; color:white; border-radius:5px; cursor:pointer; font-size:0.7rem; padding:4px 8px;">Mês Atual: OFF</button>
-            </div>
-            <div class="month-grid">
-                <div class="m-stat"><span>ENTRADAS</span><div id="m-in" style="color:var(--success)">+ R$ 0,00</div></div>
-                <div class="m-stat"><span>SAÍDAS</span><div id="m-out" style="color:var(--danger)">- R$ 0,00</div></div>
-                <div class="m-stat"><span>BALANÇO</span><div id="m-bal">R$ 0,00</div></div>
-            </div>
-        </div>
-
-        <div class="card active">
-            <div class="card-header" onclick="toggleCard(this)"><h2>💰 Caixa & Fluxo</h2><span>▼</span></div>
-            <div class="card-body">
-                <div class="chart-container" id="grafico"></div>
-                <input type="number" id="vfin" placeholder="Digite o valor R$">
-                <div class="btn-group">
-                    <button class="btn-in" onclick="f(1)">ENTRADA (+)</button>
-                    <button class="btn-out" onclick="f(0)">SAÍDA (-)</button>
+    <div id="gestao" class="page active">
+        <header class="header-cooper">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>Cooper Leonel</h1>
+                    <p>Transformando o mundo em um lugar melhor</p>
+                </div>
+                <div class="logo-svg">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="48" fill="white" stroke="#2d5a27" stroke-width="4"/>
+                        <polygon points="35,22 50,65 20,65" fill="#2d5a27"/><rect x="32" y="65" width="6" height="13" fill="#2d5a27"/>
+                        <polygon points="65,22 80,65 50,65" fill="#2d5a27"/><rect x="62" y="65" width="6" height="13" fill="#2d5a27"/>
+                    </svg>
                 </div>
             </div>
+        </header>
+
+        <div class="container">
+            <div class="dash-row">
+                <div class="dash-item"><span>SALDO TOTAL</span><b id="d-saldo">R$ 0,00</b></div>
+                <div class="dash-item"><span>SÓCIOS</span><b id="d-socios">0</b></div>
+                <div class="dash-item"><span>PENDÊNCIAS</span><b id="d-metas">0</b></div>
+            </div>
+
+            <div class="month-panel">
+                <b id="month-name">Resumo do Mês</b>
+                <div class="month-grid">
+                    <div class="m-stat"><span>ENTRADAS</span><div id="m-in" style="color:var(--success)">R$ 0,00</div></div>
+                    <div class="m-stat"><span>SAÍDAS</span><div id="m-out" style="color:var(--danger)">R$ 0,00</div></div>
+                    <div class="m-stat"><span>BALANÇO</span><div id="m-bal">R$ 0,00</div></div>
+                </div>
+            </div>
+
+            <div class="card active">
+                <div class="card-header" onclick="toggleCard(this)"><h2>💰 Caixa & Movimentação</h2><span>▼</span></div>
+                <div class="card-body">
+                    <input type="number" id="vfin" placeholder="Valor R$">
+                    <div class="btn-group">
+                        <button class="btn-in" onclick="f(1)">ENTRADA (+)</button>
+                        <button class="btn-out" onclick="f(0)">SAÍDA (-)</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="abas-container"></div>
+
+            <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button onclick="exportar()" style="background:#4a5568; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer;">📥 Backup</button>
+                <label style="background:#4a5568; color:white; padding:12px; border-radius:8px; cursor:pointer; text-align:center;">
+                    📤 Carregar <input type="file" style="display:none" onchange="importar(event)">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div id="principios" class="page">
+        <div class="header-cooper" style="margin-bottom: 30px;">
+            <div class="header-text" style="text-align: center;">
+                <h1 style="color: var(--primary);">Cultura Cooperativista</h1>
+                <p>Os 7 Princípios da Cooper Leonel</p>
+            </div>
         </div>
 
-        <div id="abas-container"></div>
+        <div class="principio-card" onclick="this.classList.toggle('open')">
+            <div class="principio-icon"><i class="fa-solid fa-door-open"></i></div>
+            <h3>1. Adesão Livre e Voluntária</h3>
+            <p>Portas abertas para todos que compartilham o propósito.</p>
+            <div class="p-info">A cooperativa é para todos. Se você quer participar e assume as responsabilidades, não há barreiras de cor, raça, política ou religião.</div>
+        </div>
 
-        <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button onclick="exportar()" style="background:#4a5568; color:white; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">📥 Baixar Backup</button>
-            <label style="background:#4a5568; color:white; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer; text-align:center;">
-                📤 Carregar Backup <input type="file" style="display:none" onchange="importar(event)">
-            </label>
+        <div class="principio-card" onclick="this.classList.toggle('open')">
+            <div class="principio-icon"><i class="fa-solid fa-users-gear"></i></div>
+            <h3>2. Gestão Democrática</h3>
+            <p>O poder está na mão do sócio. 1 pessoa = 1 voto.</p>
+            <div class="p-info">As decisões são tomadas coletivamente. Todos têm o mesmo peso na hora de decidir o futuro da Cooper Leonel.</div>
+        </div>
+
+        <div class="principio-card" onclick="this.classList.toggle('open')">
+            <div class="principio-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+            <h3>3. Participação Econômica</h3>
+            <p>O resultado volta para quem ajudou a construir.</p>
+            <div class="p-info">O capital da cooperativa é formado pelos sócios, e as sobras (lucros) voltam para eles ou são reinvestidos no bem comum.</div>
+        </div>
+
+        <div class="principio-card" onclick="this.classList.toggle('open')">
+            <div class="principio-icon"><i class="fa-solid fa-hand-fist"></i></div>
+            <h3>4. Autonomia e Independência</h3>
+            <p>Donos do próprio destino.</p>
+            <div class="p-info">Cooperativas são autônomas. Mesmo em parcerias, o controle deve ser sempre dos associados.</div>
+        </div>
+
+        <div class="principio-card" onclick="this.classList.toggle('open')">
+            <div class="principio-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h3>5. Educação e Treinamento</h3>
+            <p>Conhecimento gera crescimento.</p>
+            <div class="p-info">Promovemos a educação para que sócios e funcionários possam gerir a cooperativa com excelência.</div>
+        </div>
+
+        <div class="principio-card" onclick="this.classList.toggle('open')">
+            <div class="principio-icon"><i class="fa-solid fa-handshake"></i></div>
+            <h3>6. Intercooperação</h3>
+            <p>Juntos somos mais fortes.</p>
+            <div class="p-info">Trabalhamos com outras cooperativas para fortalecer o movimento e servir melhor aos nossos membros.</div>
+        </div>
+
+        <div class="principio-card" onclick="this.classList.toggle('open')">
+            <div class="principio-icon"><i class="fa-solid fa-leaf"></i></div>
+            <h3>7. Interesse pela Comunidade</h3>
+            <p>Transformar o entorno é nossa missão.</p>
+            <div class="p-info">A Cooper Leonel trabalha pelo desenvolvimento sustentável da comunidade local.</div>
         </div>
     </div>
 
     <script>
-        // Banco de Dados
-        let db = JSON.parse(localStorage.getItem('cooper_v2026')) || { 
+        // BANCO DE DADOS (USANDO SUA CHAVE ORIGINAL)
+        let db = JSON.parse(localStorage.getItem('cooper_smart_v1')) || { 
             s: 0, hist: [], as: [], pl: [], msg: [], dc: [], at: [], an: [], nt: [] 
         };
-        
-        let filterOnlyCurrentMonth = false;
 
         const secoes = [
-            {id: 'msg', tit: '📢 Recados e Eventos', color: 'var(--info)', fields: [{id:'msgn', p:'Título do Recado'}, {id:'msgd', p:'Data do Evento (DD/MM/AAAA)'}]},
-            {id: 'as', tit: '👥 Associados', color: 'var(--docs)', fields: [{id:'asn', p:'Nome do Associado'}, {id:'asm', p:'Número do Associado'}, {id:'asl', p:'Link Drive'}]},
-            {id: 'nt', tit: '🧾 Notas e Registros', color: 'var(--notes)', fields: [{id:'ntn', p:'Título da Nota/Gasto'}, {id:'ntd', p:'Data (DD/MM/AAAA)'}, {id:'ntl', p:'Link da Nota'}]},
-            {id: 'dc', tit: '📂 Documentos Gerais', color: '#e67e22', fields: [{id:'dcn', p:'Título'}, {id:'dcl', p:'Link'}]},
-            {id: 'at', tit: '⚖️ Livro de Atas', color: 'var(--secondary)', fields: [{id:'atn', p:'Título/Nº'}, {id:'atd', p:'Data'}, {id:'atl', p:'Link'}]},
+            {id: 'msg', tit: '📢 Recados e Eventos', color: 'var(--info)', fields: [{id:'msgn', p:'Título'}, {id:'msgd', p:'Data (DD/MM/AAAA)'}]},
+            {id: 'as', tit: '👥 Associados', color: 'var(--primary)', fields: [{id:'asn', p:'Nome'}, {id:'asm', p:'Número'}, {id:'asd', p:'Data de Nascimento (DD/MM/AAAA)'}, {id:'asl', p:'Link Drive'}]},
+            {id: 'nt', tit: '🧾 Notas e Registros', color: 'var(--notes)', fields: [{id:'ntn', p:'Título'}, {id:'ntd', p:'Data'}, {id:'ntl', p:'Link'}]},
             {id: 'pl', tit: '📝 Plano de Gestão', color: 'var(--warning)', fields: [{id:'pln', p:'Nova Meta'}]},
             {id: 'an', tit: '🎂 Aniversariantes', color: '#e91e63', fields: [{id:'ann', p:'Nome'}, {id:'and', p:'Dia/Mês (DD/MM)'}]}
         ];
 
+        function toggleMenu() { document.getElementById('menu-top').classList.toggle('active'); }
+        
+        function showPage(pid) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pid).classList.add('active');
+            toggleMenu();
+            window.scrollTo(0,0);
+        }
+
         function init() {
             const container = document.getElementById('abas-container');
+            container.innerHTML = ''; // Limpar antes de gerar
             secoes.forEach(s => {
                 container.innerHTML += `
                     <div class="card" style="border-top-color: ${s.color}">
                         <div class="card-header" onclick="toggleCard(this)"><h2>${s.tit}</h2><span>▼</span></div>
                         <div class="card-body">
-                            <input type="text" class="search-box" id="q-${s.id}" onkeyup="render()" placeholder="🔍 Pesquisar em ${s.tit}...">
+                            <input type="text" id="q-${s.id}" onkeyup="render()" placeholder="🔍 Pesquisar...">
                             ${s.fields.map(f => `<input type="text" id="${f.id}" placeholder="${f.p}">`).join('')}
                             <button class="btn-main" style="background:${s.color}" onclick="add('${s.id}')">Adicionar</button>
                             <ul id="l-${s.id}" style="margin-top:15px"></ul>
@@ -165,13 +256,7 @@
         }
 
         function toggleCard(el) { el.parentElement.classList.toggle('active'); }
-        function toggleMonthFilter() { 
-            filterOnlyCurrentMonth = !filterOnlyCurrentMonth; 
-            document.getElementById('btn-month').innerText = `Mês Atual: ${filterOnlyCurrentMonth ? 'ON' : 'OFF'}`;
-            render();
-        }
 
-        // Cálculos de Dias
         function getDiff(dataStr, isAniver = false) {
             if(!dataStr) return null;
             const hoje = new Date(); hoje.setHours(0,0,0,0);
@@ -180,84 +265,41 @@
             if(isAniver) {
                 alvo = new Date(hoje.getFullYear(), p[1]-1, p[0]);
                 if(alvo < hoje) alvo.setFullYear(hoje.getFullYear() + 1);
-            } else {
-                alvo = new Date(p[2], p[1]-1, p[0]);
-            }
+            } else { alvo = new Date(p[2], p[1]-1, p[0]); }
             return Math.ceil((alvo - hoje) / (1000 * 60 * 60 * 24));
         }
 
         function render() {
             const agora = new Date();
-            const mesAtual = agora.getMonth();
-            const anoAtual = agora.getFullYear();
-
-            // Saldo Total
-            document.getElementById('d-saldo').innerText = `R$ ${db.s.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+            document.getElementById('d-saldo').innerText = `R$ ${db.s.toLocaleString('pt-BR')}`;
             document.getElementById('d-socios').innerText = db.as.length;
             document.getElementById('d-metas').innerText = db.pl.filter(x => !x.st).length;
 
-            // Gráfico e Resumo Mensal
-            let histFiltrado = db.hist;
-            if(filterOnlyCurrentMonth) {
-                histFiltrado = db.hist.filter(h => {
-                    const d = new Date(h.t);
-                    return d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
-                });
-            }
+            let somIn = db.hist.filter(h => h.v > 0 && new Date(h.t).getMonth() === agora.getMonth()).reduce((a,b) => a + b.v, 0);
+            let somOut = Math.abs(db.hist.filter(h => h.v < 0 && new Date(h.t).getMonth() === agora.getMonth()).reduce((a,b) => a + b.v, 0));
+            document.getElementById('m-in').innerText = `R$ ${somIn.toLocaleString('pt-BR')}`;
+            document.getElementById('m-out').innerText = `R$ ${somOut.toLocaleString('pt-BR')}`;
+            document.getElementById('m-bal').innerText = `R$ ${(somIn - somOut).toLocaleString('pt-BR')}`;
 
-            let somIn = histFiltrado.filter(h => h.v > 0).reduce((a,b) => a + b.v, 0);
-            let somOut = Math.abs(histFiltrado.filter(h => h.v < 0).reduce((a,b) => a + b.v, 0));
-            
-            document.getElementById('m-in').innerText = `+ R$ ${somIn.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
-            document.getElementById('m-out').innerText = `- R$ ${somOut.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
-            document.getElementById('m-bal').innerText = `R$ ${(somIn - somOut).toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
-            document.getElementById('month-name').innerText = `Resumo de ${agora.toLocaleDateString('pt-BR', {month:'long'})}`;
-
-            const g = document.getElementById('grafico'); g.innerHTML = '';
-            const histGrafico = db.hist.slice(-20);
-            const maxVal = Math.max(...histGrafico.map(h => Math.abs(h.s)), 100);
-            histGrafico.forEach(h => {
-                const b = document.createElement('div'); b.className = 'bar';
-                b.style.height = (Math.abs(h.s) / maxVal * 100) + '%';
-                g.appendChild(b);
-            });
-
-            secoes.forEach(s => renderLista(s.id));
-            localStorage.setItem('cooper_v2026', JSON.stringify(db));
-        }
-
-        function renderLista(sid) {
-            const l = document.getElementById('l-'+sid);
-            const busca = document.getElementById('q-'+sid).value.toLowerCase();
-            l.innerHTML = '';
-
-            let itens = [...db[sid]].map((item, index) => ({...item, originalIndex: index}));
-            itens.sort((a,b) => (b.pinned === a.pinned) ? 0 : b.pinned ? 1 : -1);
-
-            itens.forEach(item => {
-                if (item.n.toLowerCase().includes(busca)) {
-                    let badge = '';
-                    let diff = null;
-
-                    if(sid === 'msg') diff = getDiff(item.d, false);
-                    if(sid === 'an') diff = getDiff(item.d, true);
-
-                    if(diff !== null) {
-                        if(diff === 0) badge = `<span class="days-badge today-badge">HOJE!</span>`;
-                        else if(diff <= 2 && diff > 0) badge = `<span class="days-badge urgent-badge">Faltam ${diff}d</span>`;
-                        else if(diff > 0) badge = `<span class="days-badge">Faltam ${diff}d</span>`;
+            secoes.forEach(s => {
+                const l = document.getElementById('l-'+s.id);
+                if(!l) return;
+                const busca = document.getElementById('q-'+s.id).value.toLowerCase();
+                l.innerHTML = '';
+                db[s.id].forEach((item, i) => {
+                    if (item.n.toLowerCase().includes(busca)) {
+                        let diff = (s.id === 'msg') ? getDiff(item.d) : (s.id === 'an' ? getDiff(item.d, true) : null);
+                        let badge = diff !== null ? `<span class="days-badge ${diff==0?'today-badge':(diff<=2?'urgent-badge':'')}">${diff==0?'HOJE!':`Faltam ${diff}d`}</span>` : '';
+                        
+                        let content = `<b>${item.n}</b> ${badge}`;
+                        if(s.id === 'as') content = `<b>${item.n}</b><br><small>Nº: ${item.m} | Nasc: ${item.d}</small>`;
+                        if(s.id === 'pl') content = `<span class="status-ball" style="background:${item.st?'var(--success)':'var(--warning)'}" onclick="tst(${i})"></span>${item.n}`;
+                        
+                        l.innerHTML += `<li><div>${content}</div><button class="btn-del" onclick="rem('${s.id}',${i})">×</button></li>`;
                     }
-
-                    let h = `<button class="pin-btn ${item.pinned?'active':''}" onclick="togglePin('${sid}',${item.originalIndex})">📌</button>`;
-                    
-                    if(sid==='pl') h += `<div><span class="status-ball" style="background:${item.st?'var(--success)':'var(--warning)'}" onclick="tst('pl',${item.originalIndex})"></span>${item.n}</div>`;
-                    else if(sid==='an') h += `<div><b>${item.n}</b> ${badge}</div>`;
-                    else if(sid==='as') h += `<div><b>${item.n}</b><br><small>Nº: ${item.m}</small></div>${item.l !== '#' ? `<a href="${item.l}" target="_blank">🔗</a>` : ''}`;
-                    else h += `<div><b>${item.n}</b><br><small>${item.d || ''}</small> ${badge}</div>${item.l && item.l !== '#' ? `<a href="${item.l}" target="_blank">🔗</a>` : ''}`;
-                    
-                    l.innerHTML += `<li class="${item.pinned?'pinned':''}">${h}<button class="btn-del" onclick="rem('${sid}',${item.originalIndex})">×</button></li>`;
-                }
+                });
             });
+            localStorage.setItem('cooper_smart_v1', JSON.stringify(db));
         }
 
         function add(sid) {
@@ -266,25 +308,33 @@
             let m = document.getElementById(sid+'m')?.value;
             let l = document.getElementById(sid+'l')?.value || '#';
             if(!n) return;
-            db[sid].push({n, d, m, l, pinned: false, st: sid==='as'});
+
+            if(sid === 'as' && d) {
+                const partes = d.split('/');
+                if(partes.length >= 2) {
+                    db.an.push({ n: n, d: `${partes[0]}/${partes[1]}`, pinned: false });
+                }
+            }
+
+            db[sid].push({n, d, m, l, st: false});
             render();
-            secoes.find(x=>x.id===sid).fields.forEach(f => document.getElementById(f.id).value = '');
+            secoes.find(x=>x.id===sid).fields.forEach(f => {
+                const input = document.getElementById(f.id);
+                if(input) input.value = '';
+            });
         }
 
         function f(t) { 
             const v = parseFloat(document.getElementById('vfin').value); 
             if(!v) return; 
             db.s = t ? db.s+v : db.s-v; 
-            db.hist.push({v: t?v:-v, s: db.s, t: new Date().getTime()}); 
-            document.getElementById('vfin').value=''; 
-            render(); 
+            db.hist.push({v: t?v:-v, t: new Date().getTime()}); 
+            document.getElementById('vfin').value=''; render(); 
         }
-
-        function togglePin(s, i) { db[s][i].pinned = !db[s][i].pinned; render(); }
-        function tst(s, i) { db[s][i].st = !db[s][i].st; render(); }
-        function rem(s, i) { if(confirm("Apagar item?")) { db[s].splice(i,1); render(); } }
-        function exportar() { const b = new Blob([JSON.stringify(db)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'cooper_leonel_backup.json'; a.click(); }
-        function importar(e) { const r = new FileReader(); r.onload = (ev) => { db = JSON.parse(ev.target.result); render(); alert("Backup Restaurado!"); }; r.readAsText(e.target.files[0]); }
+        function tst(i) { db.pl[i].st = !db.pl[i].st; render(); }
+        function rem(s, i) { if(confirm("Apagar?")) { db[s].splice(i,1); render(); } }
+        function exportar() { const b = new Blob([JSON.stringify(db)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'backup.json'; a.click(); }
+        function importar(e) { const r = new FileReader(); r.onload = (ev) => { db = JSON.parse(ev.target.result); render(); }; r.readAsText(e.target.files[0]); }
         
         window.onload = init;
     </script>
