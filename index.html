@@ -57,6 +57,7 @@
         .st-ativo { background: var(--success); color: white; }
         .st-inativo { background: #bbb; color: white; }
 
+        .btn-link { background: var(--info); color: white; padding: 4px 8px; border-radius: 5px; text-decoration: none; font-size: 0.7rem; font-weight: bold; margin-left: 10px; }
         .btn-pin { color: var(--warning); border: none; background: none; cursor: pointer; font-size: 1.1rem; margin-right: 10px; }
         .btn-del { color: var(--danger); border: none; background: none; cursor: pointer; font-weight: bold; }
         
@@ -80,7 +81,7 @@
             <div class="header-content">
                 <div class="header-text">
                     <h1>Cooper Leonel</h1>
-                    <p>Gestão Profissional & Atas Oficiais</p>
+                    <p>Gestão Profissional & Atos Oficiais</p>
                 </div>
                 <div class="logo-svg">
                     <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="white" stroke="#2d5a27" stroke-width="4"/><polygon points="35,22 50,65 20,65" fill="#2d5a27"/><rect x="32" y="65" width="6" height="13" fill="#2d5a27"/><polygon points="65,22 80,65 50,65" fill="#2d5a27"/><rect x="62" y="65" width="6" height="13" fill="#2d5a27"/></svg>
@@ -132,15 +133,16 @@
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('cooper_master_v4')) || { 
+        // Versão Master v5 (Reativado links de Drive)
+        let db = JSON.parse(localStorage.getItem('cooper_master_v5')) || { 
             s: 0, hist: [], as: [], pl: [], msg: [], dc: [], at: [], an: [], nt: [] 
         };
 
         const secoes = [
             {id: 'msg', tit: '📢 Recados e Eventos', color: 'var(--info)', hasStatus: true, fields: [{id:'msgn', p:'Título'}, {id:'msgd', p:'Data (DD/MM/AAAA)'}]},
-            {id: 'as', tit: '👥 Associados', color: 'var(--primary)', hasStatus: true, fields: [{id:'asn', p:'Nome'}, {id:'asm', p:'Nº Matrícula'}, {id:'asd', p:'Nascimento (DD/MM/AAAA)'}]},
+            {id: 'as', tit: '👥 Associados', color: 'var(--primary)', hasStatus: true, fields: [{id:'asn', p:'Nome'}, {id:'asm', p:'Nº Matrícula'}, {id:'asd', p:'Nascimento (DD/MM/AAAA)'}, {id:'asl', p:'Link Drive Sócio'}]},
             {id: 'dc', tit: '📂 Documentos Gerais', color: 'var(--notes)', fields: [{id:'dcn', p:'Nome do Doc'}, {id:'dcl', p:'Link Drive'}]},
-            {id: 'at', tit: '📜 Livro de atas', color: '#8e44ad', fields: [{id:'atn', p:'Título do ata'}, {id:'atd', p:'Data'}, {id:'atl', p:'Link'}]},
+            {id: 'at', tit: '📜 Livro de Atos', color: '#8e44ad', fields: [{id:'atn', p:'Título do Ato'}, {id:'atd', p:'Data'}, {id:'atl', p:'Link'}]},
             {id: 'pl', tit: '📝 Plano de Gestão', color: 'var(--warning)', hasStatus: true, fields: [{id:'pln', p:'Meta/Ação'}]},
             {id: 'an', tit: '🎂 Aniversariantes', color: '#e91e63', fields: [{id:'ann', p:'Nome'}, {id:'and', p:'Dia/Mês (DD/MM)'}]}
         ];
@@ -160,7 +162,7 @@
                             <input type="text" id="q-${s.id}" onkeyup="render()" placeholder="🔍 Pesquisar...">
                             ${s.fields.map(f => `<input type="text" id="${f.id}" placeholder="${f.p}">`).join('')}
                             ${s.hasStatus ? `<select id="st-${s.id}"><option value="Ativo">Ativo / Aberto</option><option value="Inativo">Inativo / Concluído</option></select>` : ''}
-                            <button class="btn-main" style="background:${s.color}" onclick="add('${s.id}')">Adicionar</button>
+                            <button class="btn-main" style="background:${s.color}" onclick="add('${sid=s.id}')">Adicionar</button>
                             <ul id="l-${s.id}" style="margin-top:15px;"></ul>
                         </div>
                     </div>`;
@@ -191,15 +193,11 @@
             const mesAtual = hoje.getMonth();
             const anoAtual = hoje.getFullYear();
 
-            // Dashboards principais
             document.getElementById('d-saldo').innerText = `R$ ${db.s.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('d-socios').innerText = db.as.filter(x => x.st === 'Ativo').length;
             document.getElementById('d-metas').innerText = db.pl.filter(x => x.st !== 'Inativo').length;
 
-            // CÁLCULO DO BALANÇO AUTOMÁTICO
-            let somIn = 0;
-            let somOut = 0;
-
+            let somIn = 0; let somOut = 0;
             db.hist.forEach(h => {
                 let dataH = new Date(h.t);
                 if(dataH.getMonth() === mesAtual && dataH.getFullYear() === anoAtual) {
@@ -214,7 +212,6 @@
             document.getElementById('m-bal').innerText = `R$ ${bal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('m-bal').style.color = bal >= 0 ? 'var(--success)' : 'var(--danger)';
 
-            // Renderização das listas
             secoes.forEach(s => {
                 const l = document.getElementById('l-'+s.id);
                 if(!l) return;
@@ -229,43 +226,49 @@
                         let statusHtml = item.st ? `<span class="status-badge ${item.st === 'Ativo' ? 'st-ativo' : 'st-inativo'}">${item.st}</span>` : '';
                         let pinHtml = `<button class="btn-pin" onclick="togglePin('${s.id}', ${realIdx})">${item.pinned ? '★' : '☆'}</button>`;
                         
+                        // Lógica para mostrar o botão de link se existir (l ou asl)
+                        let linkValue = item.l || item.asl;
+                        let linkHtml = (linkValue && linkValue !== "#") ? `<a href="${linkValue}" target="_blank" class="btn-link">📁 Abrir Drive</a>` : '';
+                        
                         let li = document.createElement('li');
                         if(item.pinned) li.className = 'pinned';
                         
                         li.innerHTML = `
                             <div style="display:flex; align-items:center">
                                 ${pinHtml} ${statusHtml} 
-                                <div><b>${item.n}</b><br><small>${item.d || ''} ${item.m ? '| '+item.m : ''}</small></div>
+                                <div>
+                                    <b>${item.n}</b> ${linkHtml}<br>
+                                    <small>${item.d || ''} ${item.m ? '| Matr: '+item.m : ''}</small>
+                                </div>
                             </div>
                             <button class="btn-del" onclick="rem('${s.id}', ${realIdx})">×</button>`;
                         l.appendChild(li);
                     }
                 });
             });
-            localStorage.setItem('cooper_master_v4', JSON.stringify(db));
+            localStorage.setItem('cooper_master_v5', JSON.stringify(db));
         }
 
         function f(t) { 
             const input = document.getElementById('vfin');
             const v = parseFloat(input.value); 
-            if(!v || v <= 0) return alert("Insira um valor válido!"); 
-
+            if(!v || v <= 0) return; 
             const valorFinal = t ? v : -v;
             db.s += valorFinal; 
             db.hist.push({v: valorFinal, t: new Date().getTime()}); 
-            
-            input.value = ''; 
-            render(); 
+            input.value = ''; render(); 
         }
 
         function add(sid) {
             let n = document.getElementById(sid+'n')?.value;
             let d = document.getElementById(sid+'d')?.value;
             let m = document.getElementById(sid+'m')?.value;
+            let l = document.getElementById(sid+'l')?.value; // Para documentos gerais/atos
+            let asl = document.getElementById(sid+'l')?.value; // Reuso do campo L para Associados
             let st = document.getElementById('st-'+sid)?.value || 'Ativo';
             if(!n) return;
 
-            db[sid].push({ n, d, m, st, pinned: false, time: new Date().getTime() });
+            db[sid].push({ n, d, m, l, asl, st, pinned: false, time: new Date().getTime() });
             
             if(sid === 'as' && d) {
                 let p = d.split('/');
@@ -273,11 +276,11 @@
             }
 
             render();
-            secoes.find(x=>x.id===sid).fields.forEach(f => document.getElementById(f.id).value = '');
+            secoes.find(x=>x.id===sid).fields.forEach(f => { if(document.getElementById(f.id)) document.getElementById(f.id).value = ''});
         }
 
         function togglePin(s, i) { db[s][i].pinned = !db[s][i].pinned; render(); }
-        function rem(s, i) { if(confirm("Deseja apagar permanentemente?")) { db[s].splice(i,1); render(); } }
+        function rem(s, i) { if(confirm("Apagar?")) { db[s].splice(i,1); render(); } }
         function exportar() { const b = new Blob([JSON.stringify(db)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'cooper_backup.json'; a.click(); }
         function importar(e) { const r = new FileReader(); r.onload = (ev) => { db = JSON.parse(ev.target.result); render(); }; r.readAsText(e.target.files[0]); }
         
