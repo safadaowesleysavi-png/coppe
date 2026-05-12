@@ -17,7 +17,7 @@
         
         /* MENU & NAVIGATION */
         #pull-tab { position: fixed; top: 0; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 8px 20px; border-radius: 0 0 15px 15px; cursor: pointer; z-index: 1001; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        #menu-top { position: fixed; top: -320px; left: 0; width: 100%; height: 310px; background: #1a1a1a; color: white; z-index: 1000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 5px solid var(--primary); }
+        #menu-top { position: fixed; top: -380px; left: 0; width: 100%; height: 370px; background: #1a1a1a; color: white; z-index: 1000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 5px solid var(--primary); }
         #menu-top.active { top: 0; }
         .menu-btn { background: var(--primary); color: white; border: none; padding: 12px 30px; margin: 5px; border-radius: 30px; cursor: pointer; font-weight: bold; width: 280px; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
@@ -81,6 +81,13 @@
         .stat-box { text-align: center; padding: 15px; background: white; border-radius: 10px; }
         .stat-box h2 { font-size: 1.8rem; color: var(--sicredi-light); margin: 0; }
         .stat-box p { color: #666; font-size: 0.8rem; font-weight: bold; margin: 5px 0 0 0; }
+
+        /* ESTILOS VOTAÇÃO */
+        .vote-option-btn { width: 100%; padding: 15px; margin: 8px 0; border: 2px solid var(--sicredi-light); border-radius: 12px; background: white; color: var(--primary); font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; justify-content: space-between; align-items: center; }
+        .vote-option-btn:hover { background: var(--sicredi-light); color: white; }
+        .result-bar-container { background: #eee; border-radius: 10px; height: 25px; width: 100%; margin: 10px 0; position: relative; overflow: hidden; }
+        .result-bar-fill { height: 100%; background: var(--success); width: 0%; transition: 1s; }
+        .result-text { position: absolute; width: 100%; text-align: center; font-size: 0.8rem; font-weight: bold; top: 4px; z-index: 1; }
     </style>
 </head>
 <body>
@@ -89,6 +96,7 @@
 
     <nav id="menu-top">
         <button class="menu-btn" onclick="showPage('gestao')"><i class="fa-solid fa-chart-line"></i> Painel de Gestão</button>
+        <button class="menu-btn" onclick="showPage('votacao')"><i class="fa-solid fa-check-to-slot"></i> Assembleia Digital</button>
         <button class="menu-btn" onclick="showPage('sobre-coop')"><i class="fa-solid fa-graduation-cap"></i> O que é uma Cooperativa Escolar?</button>
         <button class="menu-btn" onclick="showPage('principios')"><i class="fa-solid fa-leaf"></i> 7 Princípios Oficiais</button>
     </nav>
@@ -141,6 +149,32 @@
                     📤 Carregar <input type="file" style="display:none" onchange="importar(event)">
                 </label>
             </div>
+        </div>
+    </div>
+
+    <div id="votacao" class="page">
+        <header class="header-cooper">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>Assembleia Digital</h1>
+                    <p>Gestão Democrática em Tempo Real</p>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <div class="card active" id="pauta-form">
+                <div class="card-header" onclick="toggleCard(this)"><h2>📝 Criar Nova Pauta</h2><span>▼</span></div>
+                <div class="card-body">
+                    <input type="text" id="poll-title" placeholder="Título da Votação">
+                    <div id="poll-options-container">
+                        <input type="text" class="poll-opt" placeholder="Opção 1">
+                        <input type="text" class="poll-opt" placeholder="Opção 2">
+                    </div>
+                    <button class="btn-main" style="background:var(--info); margin-bottom:10px" onclick="addPollOption()">+ Adicionar Opção</button>
+                    <button class="btn-main" style="background:var(--primary)" onclick="startPoll()">Lançar Votação</button>
+                </div>
+            </div>
+            <div id="active-poll-container"></div>
         </div>
     </div>
 
@@ -236,7 +270,7 @@
     <script>
         // Banco de Dados Master v6
         let db = JSON.parse(localStorage.getItem('cooper_master_v6')) || { 
-            s: 0, hist: [], as: [], pl: [], msg: [], dc: [], at: [], an: [], nt: [] 
+            s: 0, hist: [], as: [], pl: [], msg: [], dc: [], at: [], an: [], nt: [], poll: null 
         };
 
         const secoes = [
@@ -249,9 +283,59 @@
         ];
 
         function toggleMenu() { document.getElementById('menu-top').classList.toggle('active'); }
-        function showPage(p) { document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); document.getElementById(p).classList.add('active'); toggleMenu(); window.scrollTo(0,0); }
+        function showPage(p) { document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); document.getElementById(p).classList.add('active'); toggleMenu(); window.scrollTo(0,0); if(p === 'votacao') renderPoll(); }
         function toggleCard(el) { el.parentElement.classList.toggle('active'); }
 
+        // LÓGICA DE VOTAÇÃO
+        function addPollOption() {
+            const container = document.getElementById('poll-options-container');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'poll-opt';
+            input.placeholder = `Opção ${container.children.length + 1}`;
+            container.appendChild(input);
+        }
+
+        function startPoll() {
+            const title = document.getElementById('poll-title').value;
+            const options = Array.from(document.querySelectorAll('.poll-opt')).map(i => i.value).filter(v => v !== "");
+            if(!title || options.length < 2) return alert("Preencha o título e ao menos 2 opções!");
+            db.poll = { title, options: options.map(o => ({text: o, votes: 0})), active: true, total: 0 };
+            renderPoll();
+            localStorage.setItem('cooper_master_v6', JSON.stringify(db));
+        }
+
+        function renderPoll() {
+            const container = document.getElementById('active-poll-container');
+            if(!db.poll) { container.innerHTML = ""; return; }
+            let html = `<div class="card active" style="border-top:4px solid var(--sicredi-light)">
+                <div class="card-header"><h2>📊 ${db.poll.title}</h2></div>
+                <div class="card-body">`;
+            
+            db.poll.options.forEach((opt, idx) => {
+                const percent = db.poll.total > 0 ? Math.round((opt.votes / db.poll.total) * 100) : 0;
+                if(db.poll.active) {
+                    html += `<button class="vote-option-btn" onclick="vote(${idx})">${opt.text} <span>${opt.votes}</span></button>`;
+                } else {
+                    html += `<div style="margin-bottom:10px"><b>${opt.text}</b> (${opt.votes})
+                        <div class="result-bar-container"><div class="result-bar-fill" style="width:${percent}%"></div><div class="result-text">${percent}%</div></div>
+                    </div>`;
+                }
+            });
+
+            if(db.poll.active) {
+                html += `<button class="btn-main" style="background:var(--danger); margin-top:20px" onclick="closePoll()">Encerrar Assembleia</button>`;
+            } else {
+                html += `<button class="btn-main" style="background:var(--notes); margin-top:20px" onclick="resetPoll()">Nova Assembleia</button>`;
+            }
+            container.innerHTML = html + `</div></div>`;
+        }
+
+        function vote(idx) { db.poll.options[idx].votes++; db.poll.total++; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); }
+        function closePoll() { if(confirm("Encerrar a votação?")) { db.poll.active = false; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); } }
+        function resetPoll() { if(confirm("Limpar votação atual e criar nova?")) { db.poll = null; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); } }
+
+        // RESTO DO CÓDIGO ORIGINAL
         function init() {
             const container = document.getElementById('abas-container');
             container.innerHTML = '';
