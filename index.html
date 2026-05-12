@@ -17,7 +17,7 @@
         
         /* MENU & NAVIGATION */
         #pull-tab { position: fixed; top: 0; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 8px 20px; border-radius: 0 0 15px 15px; cursor: pointer; z-index: 1001; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        #menu-top { position: fixed; top: -380px; left: 0; width: 100%; height: 370px; background: #1a1a1a; color: white; z-index: 1000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 5px solid var(--primary); }
+        #menu-top { position: fixed; top: -450px; left: 0; width: 100%; height: 440px; background: #1a1a1a; color: white; z-index: 1000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 5px solid var(--primary); }
         #menu-top.active { top: 0; }
         .menu-btn { background: var(--primary); color: white; border: none; padding: 12px 30px; margin: 5px; border-radius: 30px; cursor: pointer; font-weight: bold; width: 280px; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
@@ -58,19 +58,21 @@
         .st-ativo { background: var(--success); color: white; }
         .st-inativo { background: #bbb; color: white; }
 
-        .btn-link { background: var(--info); color: white; padding: 4px 8px; border-radius: 5px; text-decoration: none; font-size: 0.7rem; font-weight: bold; margin-left: 10px; }
-        .btn-pin { color: var(--warning); border: none; background: none; cursor: pointer; font-size: 1.1rem; margin-right: 10px; }
-        .btn-del { color: var(--danger); border: none; background: none; cursor: pointer; font-weight: bold; }
-        
+        /* ESTILO CALENDÁRIO & RANKING */
+        .cal-day { background: #fdfdfd; border: 1px solid #eee; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+        .cal-day h4 { margin: 0 0 5px 0; color: var(--primary); font-size: 0.9rem; }
+        .rank-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee; }
+        .rank-badge { background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
+
         /* PRINCÍPIOS CARD STYLE */
-        .principio-card { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; border-left: 10px solid var(--primary); width: 90%; max-width: 650px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; }
+        .principio-card { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; border-left: 10px solid var(--primary); width: 100%; max-width: 650px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; box-sizing: border-box; }
         .principio-card:hover { transform: translateY(-3px); }
         .principio-icon { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
         .p-info { max-height: 0; overflow: hidden; transition: 0.5s ease; font-size: 0.95rem; color: #555; line-height: 1.6; }
         .principio-card.open .p-info { max-height: 500px; padding-top: 15px; }
         .principio-card h3 { margin: 0; color: var(--primary); }
 
-        /* ESTILO ABA COOPERATIVA ESCOLAR (VIDEO SICREDI) */
+        /* ESTILO ABA COOPERATIVA ESCOLAR */
         .sicredi-section { width: 90%; max-width: 800px; padding: 20px; text-align: left; }
         .sicredi-title { color: var(--primary); font-size: 1.8rem; margin-bottom: 10px; }
         .sicredi-text { font-size: 1rem; color: #555; line-height: 1.6; margin-bottom: 25px; }
@@ -96,6 +98,7 @@
 
     <nav id="menu-top">
         <button class="menu-btn" onclick="showPage('gestao')"><i class="fa-solid fa-chart-line"></i> Painel de Gestão</button>
+        <button class="menu-btn" onclick="showPage('limpeza')"><i class="fa-solid fa-broom"></i> Organização da Sala</button>
         <button class="menu-btn" onclick="showPage('votacao')"><i class="fa-solid fa-check-to-slot"></i> Assembleia Digital</button>
         <button class="menu-btn" onclick="showPage('sobre-coop')"><i class="fa-solid fa-graduation-cap"></i> O que é uma Cooperativa Escolar?</button>
         <button class="menu-btn" onclick="showPage('principios')"><i class="fa-solid fa-leaf"></i> 7 Princípios Oficiais</button>
@@ -106,7 +109,7 @@
             <div class="header-content">
                 <div class="header-text">
                     <h1>Cooper Leonel</h1>
-                    <p>Gestão Profissional & atas Oficiais</p>
+                    <p>Gestão Profissional & Atas Oficiais</p>
                 </div>
                 <div class="logo-svg">
                     <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="white" stroke="#2d5a27" stroke-width="4"/><polygon points="35,22 50,65 20,65" fill="#2d5a27"/><rect x="32" y="65" width="6" height="13" fill="#2d5a27"/><polygon points="65,22 80,65 50,65" fill="#2d5a27"/><rect x="62" y="65" width="6" height="13" fill="#2d5a27"/></svg>
@@ -142,7 +145,7 @@
             </div>
 
             <div id="abas-container"></div>
-
+            
             <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <button onclick="exportar()" style="background:#4a5568; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer;">📥 Backup</button>
                 <label style="background:#4a5568; color:white; padding:12px; border-radius:8px; cursor:pointer; text-align:center;">
@@ -152,14 +155,33 @@
         </div>
     </div>
 
-    <div id="votacao" class="page">
+    <div id="limpeza" class="page">
         <header class="header-cooper">
             <div class="header-content">
                 <div class="header-text">
-                    <h1>Assembleia Digital</h1>
-                    <p>Gestão Democrática em Tempo Real</p>
+                    <h1>Organização da Sala</h1>
+                    <p>Calendário Semanal e Ranking</p>
                 </div>
             </div>
+        </header>
+        <div class="container">
+            <div class="card active">
+                <div class="card-header" onclick="toggleCard(this)"><h2>📅 Cronograma da Semana</h2><span>▼</span></div>
+                <div class="card-body" id="calendario-limpeza"></div>
+            </div>
+            <div class="card active">
+                <div class="card-header" onclick="toggleCard(this)"><h2>🏆 Ranking de Limpeza</h2><span>▼</span></div>
+                <div class="card-body">
+                    <div id="ranking-limpeza"></div>
+                    <button class="btn-main" style="background:var(--danger); margin-top:15px; font-size: 0.8rem;" onclick="resetRanking()">Limpar Ranking Total</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="votacao" class="page">
+        <header class="header-cooper">
+            <div class="header-content"><div class="header-text"><h1>Assembleia Digital</h1><p>Gestão Democrática em Tempo Real</p></div></div>
         </header>
         <div class="container">
             <div class="card active" id="pauta-form">
@@ -224,129 +246,148 @@
             </div>
         </div>
 
-        <div class="principio-card" onclick="this.classList.toggle('open')">
-            <div class="principio-icon"><i class="fa-solid fa-door-open"></i></div>
-            <h3>1. Adesão livre e voluntária</h3>
-            <div class="p-info">As cooperativas são organizações voluntárias, abertas a todas as pessoas aptas a utilizar os seus serviços e assumir as responsabilidades como membros, sem discriminação de gênero, social, racial, política e religiosa.</div>
-        </div>
+        <div class="container">
+            <div class="principio-card" onclick="this.classList.toggle('open')">
+                <div class="principio-icon"><i class="fa-solid fa-door-open"></i></div>
+                <h3>1. Adesão livre e voluntária</h3>
+                <div class="p-info">As cooperativas são organizações voluntárias, abertas a todas as pessoas aptas a utilizar os seus serviços e assumir as responsabilidades como membros, sem discriminação de gênero, social, racial, política e religiosa.</div>
+            </div>
 
-        <div class="principio-card" onclick="this.classList.toggle('open')">
-            <div class="principio-icon"><i class="fa-solid fa-users-gear"></i></div>
-            <h3>2. Gestão democrática dos membros</h3>
-            <div class="p-info">As cooperativas são organizações democráticas, controladas pelos seus membros, que participam ativamente na formulação das suas políticas e na tomada de decisões. Os homens e as mulheres, eleitos como representantes dos demais membros, são responsáveis perante estes. Nas cooperativas de primeiro grau os membros têm igual direito de voto (um membro, um voto); as cooperativas de grau superior são também organizadas de maneira democrática.</div>
-        </div>
+            <div class="principio-card" onclick="this.classList.toggle('open')">
+                <div class="principio-icon"><i class="fa-solid fa-users-gear"></i></div>
+                <h3>2. Gestão democrática dos membros</h3>
+                <div class="p-info">As cooperativas são organizações democráticas, controladas pelos seus membros, que participam ativamente na formulação das suas políticas e na tomada de decisões. Nas cooperativas de primeiro grau os membros têm igual direito de voto (um membro, um voto).</div>
+            </div>
 
-        <div class="principio-card" onclick="this.classList.toggle('open')">
-            <div class="principio-icon"><i class="fa-solid fa-piggy-bank"></i></div>
-            <h3>3. Participação econômica</h3>
-            <div class="p-info">Os membros contribuem equitativamente para o capital das suas cooperativas e controlam-no democraticamente. Parte desse capital é, normalmente, propriedade comum da cooperativa. Os membros recebem, habitualmente, se houver, uma remuneração limitada ao capital integralizado, como condição de sua adesão.</div>
-        </div>
+            <div class="principio-card" onclick="this.classList.toggle('open')">
+                <div class="principio-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                <h3>3. Participação econômica</h3>
+                <div class="p-info">Os membros contribuem equitativamente para o capital das suas cooperativas e controlam-no democraticamente. Parte desse capital é, normalmente, propriedade comum da cooperativa.</div>
+            </div>
 
-        <div class="principio-card" onclick="this.classList.toggle('open')">
-            <div class="principio-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <h3>4. Autonomia e independência</h3>
-            <div class="p-info">As cooperativas são organizações autônomas, de ajuda mútua, controladas pelos seus membros. Se firmarem acordos com outras organizações, incluindo instituições públicas, ou recorrerem a capital externo, devem fazê-lo em condições que assegurem o controle democrático pelos seus membros e mantenham a autonomia da cooperativa.</div>
-        </div>
+            <div class="principio-card" onclick="this.classList.toggle('open')">
+                <div class="principio-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>4. Autonomia e independência</h3>
+                <div class="p-info">As cooperativas são organizações autônomas, de ajuda mútua, controladas pelos seus membros. Se firmarem acordos com outras organizações, devem fazê-lo em condições que assegurem o controle democrático.</div>
+            </div>
 
-        <div class="principio-card" onclick="this.classList.toggle('open')">
-            <div class="principio-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-            <h3>5. Educação, formação e informação</h3>
-            <div class="p-info">As cooperativas promovem a educação e a formação dos seus membros, dos representantes eleitos e dos trabalhadores, de forma que estes possam contribuir, eficazmente, para o desenvolvimento das suas cooperativas. Informam o público em geral, particularmente os jovens e os líderes de opinião, sobre a natureza e as vantagens da cooperação.</div>
-        </div>
+            <div class="principio-card" onclick="this.classList.toggle('open')">
+                <div class="principio-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <h3>5. Educação, formação e informação</h3>
+                <div class="p-info">As cooperativas promovem a educação e a formação dos seus membros, dos representantes eleitos e dos trabalhadores, de forma que estes possam contribuir para o desenvolvimento das suas cooperativas.</div>
+            </div>
 
-        <div class="principio-card" onclick="this.classList.toggle('open')">
-            <div class="principio-icon"><i class="fa-solid fa-handshake"></i></div>
-            <h3>6. Intercooperação</h3>
-            <div class="p-info">É a cooperação entre as cooperativas, para o fortalecimento do movimento como um todo e dos princípios cooperativistas. Isso pode ocorrer em diversos níveis: através das estruturas locais, regionais, nacionais, internacionais; entre cooperativas do mesmo sistema; com cooperativas de outros sistemas; e com cooperativas de outros ramos do cooperativismo.</div>
-        </div>
+            <div class="principio-card" onclick="this.classList.toggle('open')">
+                <div class="principio-icon"><i class="fa-solid fa-handshake"></i></div>
+                <h3>6. Intercooperação</h3>
+                <div class="p-info">É a cooperação entre as cooperativas, para o fortalecimento do movimento como um todo e dos princípios cooperativistas, através de estruturas locais, regionais, nacionais e internacionais.</div>
+            </div>
 
-        <div class="principio-card" onclick="this.classList.toggle('open')">
-            <div class="principio-icon"><i class="fa-solid fa-leaf"></i></div>
-            <h3>7. Interesse pela comunidade</h3>
-            <div class="p-info">As cooperativas trabalham para o desenvolvimento sustentável das comunidades onde estão inseridas, através de políticas aprovadas pelos membros. Prezam por investimentos em projetos que sejam economicamente viáveis, ambientalmente corretos e socialmente justos.</div>
+            <div class="principio-card" onclick="this.classList.toggle('open')">
+                <div class="principio-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h3>7. Interesse pela comunidade</h3>
+                <div class="p-info">As cooperativas trabalham para o desenvolvimento sustentável das comunidades onde estão inseridas, através de políticas aprovadas pelos membros.</div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Banco de Dados Master v6
-        let db = JSON.parse(localStorage.getItem('cooper_master_v6')) || { 
-            s: 0, hist: [], as: [], pl: [], msg: [], dc: [], at: [], an: [], nt: [], poll: null 
+        // Banco de Dados Master v9
+        let db = JSON.parse(localStorage.getItem('cooper_master_v9')) || { 
+            s: 0, hist: [], as: [], pl: [], msg: [], dc: [], at: [], an: [], nt: [], 
+            poll: null, limpeza: { escala: {}, ranking: {} }
         };
 
         const secoes = [
-            {id: 'msg', tit: '📢 Recados e Eventos', color: 'var(--info)', hasStatus: true, fields: [{id:'msgn', p:'Título'}, {id:'msgd', p:'Data (DD/MM/AAAA)'}]},
-            {id: 'as', tit: '👥 Associados', color: 'var(--primary)', hasStatus: true, fields: [{id:'asn', p:'Nome'}, {id:'asm', p:'Nº Matrícula'}, {id:'asd', p:'Nascimento (DD/MM/AAAA)'}, {id:'asl', p:'Link Drive Sócio'}]},
-            {id: 'dc', tit: '📂 Documentos Gerais', color: 'var(--notes)', fields: [{id:'dcn', p:'Nome do Doc'}, {id:'dcl', p:'Link Drive'}]},
-            {id: 'at', tit: '📜 Livro de atas', color: '#8e44ad', fields: [{id:'atn', p:'Título do ata'}, {id:'atd', p:'Data'}, {id:'atl', p:'Link'}]},
+            {id: 'msg', tit: '📢 Recados e Eventos', color: 'var(--info)', hasStatus: true, fields: [{id:'msgn', p:'Título'}, {id:'msgd', p:'Data'}]},
+            {id: 'as', tit: '👥 Associados', color: 'var(--primary)', hasStatus: true, fields: [{id:'asn', p:'Nome'}, {id:'asm', p:'Nº Matrícula'}, {id:'asd', p:'Nascimento'}, {id:'asl', p:'Link Drive'}]},
+            {id: 'dc', tit: '📂 Documentos Gerais', color: 'var(--notes)', fields: [{id:'dcn', p:'Nome'}, {id:'dcl', p:'Link'}]},
+            {id: 'at', tit: '📜 Livro de atas', color: '#8e44ad', fields: [{id:'atn', p:'Título'}, {id:'atd', p:'Data'}, {id:'atl', p:'Link'}]},
             {id: 'pl', tit: '📝 Plano de Gestão', color: 'var(--warning)', hasStatus: true, fields: [{id:'pln', p:'Meta/Ação'}]},
-            {id: 'an', tit: '🎂 Aniversariantes', color: '#e91e63', fields: [{id:'ann', p:'Nome'}, {id:'and', p:'Dia/Mês (DD/MM)'}]}
+            {id: 'an', tit: '🎂 Aniversariantes', color: '#e91e63', fields: [{id:'ann', p:'Nome'}, {id:'and', p:'Dia/Mês'}]}
         ];
 
         function toggleMenu() { document.getElementById('menu-top').classList.toggle('active'); }
-        function showPage(p) { document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); document.getElementById(p).classList.add('active'); toggleMenu(); window.scrollTo(0,0); if(p === 'votacao') renderPoll(); }
+        function showPage(p) { 
+            document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); 
+            document.getElementById(p).classList.add('active'); 
+            toggleMenu(); window.scrollTo(0,0);
+            if(p === 'votacao') renderPoll();
+            if(p === 'limpeza') renderLimpeza();
+        }
         function toggleCard(el) { el.parentElement.classList.toggle('active'); }
 
-        // LÓGICA DE VOTAÇÃO (ALTERADA PARA VOTO SECRETO)
+        // --- LÓGICA DE LIMPEZA ---
+        const diasSemana = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira"];
+        function renderLimpeza() {
+            const container = document.getElementById('calendario-limpeza');
+            container.innerHTML = "";
+            diasSemana.forEach(dia => {
+                const dados = db.limpeza.escala[dia] || { nome: "", feito: false };
+                container.innerHTML += `
+                    <div class="cal-day">
+                        <h4>${dia}</h4>
+                        <div style="display:flex; gap:10px">
+                            <input type="text" placeholder="Responsável" value="${dados.nome}" oninput="updateLimpezaNome('${dia}', this.value)" style="margin-bottom:0">
+                            <button onclick="confirmarLimpeza('${dia}')" style="background:${dados.feito ? 'var(--success)' : '#ccc'}; color:white; border:none; padding:5px 10px; border-radius:8px; cursor:pointer">
+                                ${dados.feito ? '✅ Feito' : 'Confirmar'}
+                            </button>
+                        </div>
+                    </div>`;
+            });
+            renderRanking();
+        }
+        function updateLimpezaNome(dia, valor) {
+            if(!db.limpeza.escala[dia]) db.limpeza.escala[dia] = { nome: "", feito: false };
+            db.limpeza.escala[dia].nome = valor; save();
+        }
+        function confirmarLimpeza(dia) {
+            const d = db.limpeza.escala[dia];
+            if(!d || !d.nome || d.feito) return;
+            d.feito = true;
+            db.limpeza.ranking[d.nome] = (db.limpeza.ranking[d.nome] || 0) + 1;
+            save(); renderLimpeza();
+        }
+        function renderRanking() {
+            const container = document.getElementById('ranking-limpeza');
+            const sorted = Object.entries(db.limpeza.ranking).sort((a,b) => b[1]-a[1]);
+            container.innerHTML = sorted.length ? "" : "<p>Nenhum registro.</p>";
+            sorted.forEach(([n, q]) => { container.innerHTML += `<div class="rank-item"><span>${n}</span><span class="rank-badge">${q} vez(es)</span></div>`; });
+        }
+        function resetRanking() { if(confirm("Zerar ranking?")) { db.limpeza.ranking = {}; save(); renderLimpeza(); } }
+
+        // --- VOTAÇÃO ---
         function addPollOption() {
             const container = document.getElementById('poll-options-container');
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'poll-opt';
+            const input = document.createElement('input'); input.className = 'poll-opt';
             input.placeholder = `Opção ${container.children.length + 1}`;
             container.appendChild(input);
         }
-
         function startPoll() {
             const title = document.getElementById('poll-title').value;
             const options = Array.from(document.querySelectorAll('.poll-opt')).map(i => i.value).filter(v => v !== "");
-            if(!title || options.length < 2) return alert("Preencha o título e ao menos 2 opções!");
+            if(!title || options.length < 2) return alert("Preencha tudo!");
             db.poll = { title, options: options.map(o => ({text: o, votes: 0})), active: true, total: 0 };
-            renderPoll();
-            localStorage.setItem('cooper_master_v6', JSON.stringify(db));
+            save(); renderPoll();
         }
-
         function renderPoll() {
             const container = document.getElementById('active-poll-container');
             if(!db.poll) { container.innerHTML = ""; return; }
-            let html = `<div class="card active" style="border-top:4px solid var(--sicredi-light)">
-                <div class="card-header"><h2>📊 ${db.poll.title}</h2></div>
-                <div class="card-body">`;
-            
+            let html = `<div class="card active" style="border-top:4px solid var(--sicredi-light)"><div class="card-header"><h2>📊 ${db.poll.title}</h2></div><div class="card-body">`;
             db.poll.options.forEach((opt, idx) => {
                 const percent = db.poll.total > 0 ? Math.round((opt.votes / db.poll.total) * 100) : 0;
-                
-                if(db.poll.active) {
-                    // MODO VOTO SECRETO: Não exibe números enquanto ativo
-                    html += `<button class="vote-option-btn" onclick="vote(${idx})">${opt.text} <i class="fa-solid fa-check-to-slot" style="opacity:0.3"></i></button>`;
-                } else {
-                    // MODO RESULTADO: Exibe barras e números após encerramento
-                    html += `<div style="margin-bottom:10px"><b>${opt.text}</b> (${opt.votes} votos)
-                        <div class="result-bar-container"><div class="result-bar-fill" style="width:${percent}%"></div><div class="result-text">${percent}%</div></div>
-                    </div>`;
-                }
+                if(db.poll.active) html += `<button class="vote-option-btn" onclick="vote(${idx})">${opt.text} <i class="fa-solid fa-check-to-slot" style="opacity:0.3"></i></button>`;
+                else html += `<div style="margin-bottom:10px"><b>${opt.text}</b> (${opt.votes} votos)<div class="result-bar-container"><div class="result-bar-fill" style="width:${percent}%"></div><div class="result-text">${percent}%</div></div></div>`;
             });
-
-            if(db.poll.active) {
-                html += `
-                <p style="text-align:center; font-size:0.8rem; color:var(--notes); margin-top:10px">
-                    <i class="fa-solid fa-lock"></i> Votos ocultos para garantir a imparcialidade.
-                </p>
-                <button class="btn-main" style="background:var(--danger); margin-top:20px" onclick="closePoll()">Encerrar Assembleia e Ver Resultado</button>`;
-            } else {
-                html += `
-                <div style="background:#f0f9eb; padding:10px; border-radius:8px; text-align:center; margin-top:10px">
-                    <b>Total da Assembleia: ${db.poll.total} votos</b>
-                </div>
-                <button class="btn-main" style="background:var(--notes); margin-top:20px" onclick="resetPoll()">Nova Assembleia</button>`;
-            }
+            html += db.poll.active ? `<button class="btn-main" style="background:var(--danger); margin-top:20px" onclick="closePoll()">Encerrar Votação</button>` : `<button class="btn-main" style="background:var(--notes); margin-top:20px" onclick="resetPoll()">Nova Votação</button>`;
             container.innerHTML = html + `</div></div>`;
         }
+        function vote(idx) { db.poll.options[idx].votes++; db.poll.total++; save(); renderPoll(); }
+        function closePoll() { if(confirm("Revelar resultados?")) { db.poll.active = false; save(); renderPoll(); } }
+        function resetPoll() { if(confirm("Limpar?")) { db.poll = null; save(); renderPoll(); } }
 
-        function vote(idx) { db.poll.options[idx].votes++; db.poll.total++; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); }
-        function closePoll() { if(confirm("Encerrar a votação e revelar os resultados?")) { db.poll.active = false; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); } }
-        function resetPoll() { if(confirm("Limpar votação atual e criar nova?")) { db.poll = null; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); } }
-
-        // RESTO DO CÓDIGO ORIGINAL
+        // --- SISTEMA CORE ---
+        function save() { localStorage.setItem('cooper_master_v9', JSON.stringify(db)); }
         function init() {
             const container = document.getElementById('abas-container');
             container.innerHTML = '';
@@ -357,7 +398,7 @@
                         <div class="card-body">
                             <input type="text" id="q-${s.id}" onkeyup="render()" placeholder="🔍 Pesquisar...">
                             ${s.fields.map(f => `<input type="text" id="${f.id}" placeholder="${f.p}">`).join('')}
-                            ${s.hasStatus ? `<select id="st-${s.id}"><option value="Ativo">Ativo / Aberto</option><option value="Inativo">Inativo / Concluído</option></select>` : ''}
+                            ${s.hasStatus ? `<select id="st-${s.id}"><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option></select>` : ''}
                             <button class="btn-main" style="background:${s.color}" onclick="add('${s.id}')">Adicionar</button>
                             <ul id="l-${s.id}" style="margin-top:15px;"></ul>
                         </div>
@@ -365,99 +406,52 @@
             });
             render();
         }
-
         function render() {
-            const hoje = new Date();
-            const mesAtual = hoje.getMonth();
-            const anoAtual = hoje.getFullYear();
-
             document.getElementById('d-saldo').innerText = `R$ ${db.s.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('d-socios').innerText = db.as.filter(x => x.st === 'Ativo').length;
             document.getElementById('d-metas').innerText = db.pl.filter(x => x.st !== 'Inativo').length;
-
-            let somIn = 0; let somOut = 0;
-            db.hist.forEach(h => {
-                let dataH = new Date(h.t);
-                if(dataH.getMonth() === mesAtual && dataH.getFullYear() === anoAtual) {
-                    if(h.v > 0) somIn += h.v; else somOut += Math.abs(h.v);
-                }
-            });
-
-            document.getElementById('m-in').innerText = `R$ ${somIn.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('m-out').innerText = `R$ ${somOut.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            let bal = somIn - somOut;
-            document.getElementById('m-bal').innerText = `R$ ${bal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('m-bal').style.color = bal >= 0 ? 'var(--success)' : 'var(--danger)';
-
             secoes.forEach(s => {
                 const l = document.getElementById('l-'+s.id);
                 if(!l) return;
                 const busca = (document.getElementById('q-'+s.id)?.value || "").toLowerCase();
                 l.innerHTML = '';
-
-                let lista = [...db[s.id]].sort((a, b) => b.time - a.time);
-
-                lista.forEach((item) => {
+                [...db[s.id]].sort((a, b) => b.time - a.time).forEach((item) => {
                     const realIdx = db[s.id].findIndex(x => x.time === item.time);
                     if (item.n.toLowerCase().includes(busca)) {
-                        let statusHtml = item.st ? `<span class="status-badge ${item.st === 'Ativo' ? 'st-ativo' : 'st-inativo'}">${item.st}</span>` : '';
-                        let pinHtml = `<button class="btn-pin" onclick="togglePin('${s.id}', ${realIdx})">${item.pinned ? '★' : '☆'}</button>`;
-                        let linkValue = item.l || item.asl || item.dcl || item.atl;
-                        let linkHtml = (linkValue && linkValue !== "#") ? `<a href="${linkValue}" target="_blank" class="btn-link">📁 Link</a>` : '';
-                        
-                        let li = document.createElement('li');
-                        if(item.pinned) li.className = 'pinned';
-                        
-                        li.innerHTML = `
+                        l.innerHTML += `<li class="${item.pinned ? 'pinned' : ''}">
                             <div style="display:flex; align-items:center">
-                                ${pinHtml} ${statusHtml} 
-                                <div>
-                                    <b>${item.n}</b> ${linkHtml}<br>
-                                    <small>${item.d || ''} ${item.m ? '| '+item.m : ''}</small>
-                                </div>
+                                <button class="btn-pin" onclick="togglePin('${s.id}', ${realIdx})">${item.pinned ? '★' : '☆'}</button>
+                                <div><b>${item.n}</b><br><small>${item.d || ''}</small></div>
                             </div>
-                            <button class="btn-del" onclick="rem('${s.id}', ${realIdx})">×</button>`;
-                        l.appendChild(li);
+                            <button class="btn-del" onclick="rem('${s.id}', ${realIdx})">×</button>
+                        </li>`;
                     }
                 });
             });
-            localStorage.setItem('cooper_master_v6', JSON.stringify(db));
+            save();
         }
-
-        function f(t) { 
-            const input = document.getElementById('vfin');
-            const v = parseFloat(input.value); 
-            if(!v || v <= 0) return; 
-            const valorFinal = t ? v : -v;
-            db.s += valorFinal; 
-            db.hist.push({v: valorFinal, t: new Date().getTime()}); 
-            input.value = ''; render(); 
-        }
-
         function add(sid) {
             let n = document.getElementById(sid+'n')?.value;
-            let d = document.getElementById(sid+'d')?.value;
-            let m = document.getElementById(sid+'m')?.value;
-            let l = document.getElementById(sid+'l')?.value || document.getElementById(sid+'sl')?.value || "#";
-            let st = document.getElementById('st-'+sid)?.value || 'Ativo';
             if(!n) return;
-
-            db[sid].push({ n, d, m, l, st, pinned: false, time: new Date().getTime() });
-            
-            if(sid === 'as' && d) {
-                let p = d.split('/');
-                if(p.length >= 2) db.an.push({ n, d: `${p[0]}/${p[1]}`, time: new Date().getTime(), pinned: false });
-            }
-
-            render();
-            secoes.find(x=>x.id===sid).fields.forEach(f => { if(document.getElementById(f.id)) document.getElementById(f.id).value = ''});
+            let obj = { n, pinned: false, time: new Date().getTime(), st: document.getElementById('st-'+sid)?.value || 'Ativo' };
+            secoes.find(x=>x.id===sid).fields.forEach(f => {
+                let input = document.getElementById(f.id);
+                if(input) { obj[f.id.slice(-1)] = input.value; input.value = ''; }
+            });
+            db[sid].push(obj); render();
         }
-
+        function f(t) { 
+            const v = parseFloat(document.getElementById('vfin').value); 
+            if(!v) return;
+            db.s += t ? v : -v;
+            db.hist.push({v: t?v:-v, t: new Date().getTime()});
+            document.getElementById('vfin').value = ''; render(); 
+        }
+        function rem(s, i) { if(confirm("Apagar?")) { db[s].splice(i,1); render(); } }
         function togglePin(s, i) { db[s][i].pinned = !db[s][i].pinned; render(); }
-        function rem(s, i) { if(confirm("Apagar permanentemente?")) { db[s].splice(i,1); render(); } }
-        function exportar() { const b = new Blob([JSON.stringify(db)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'cooper_backup.json'; a.click(); }
+        function exportar() { const b = new Blob([JSON.stringify(db)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'backup.json'; a.click(); }
         function importar(e) { const r = new FileReader(); r.onload = (ev) => { db = JSON.parse(ev.target.result); render(); }; r.readAsText(e.target.files[0]); }
-        
+
         window.onload = init;
     </script>
 </body>
