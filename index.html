@@ -54,10 +54,6 @@
         li { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
         li.pinned { border: 2px solid var(--warning); background: #fffdf5; order: -1; }
         
-        .status-badge { padding: 3px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; margin-right: 10px; }
-        .st-ativo { background: var(--success); color: white; }
-        .st-inativo { background: #bbb; color: white; }
-
         /* ESTILO CALENDÁRIO & RANKING */
         .cal-day { background: #fdfdfd; border: 1px solid #eee; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
         .cal-day h4 { margin: 0 0 5px 0; color: var(--primary); font-size: 0.9rem; }
@@ -90,10 +86,24 @@
         .result-bar-container { background: #eee; border-radius: 10px; height: 25px; width: 100%; margin: 10px 0; position: relative; overflow: hidden; }
         .result-bar-fill { height: 100%; background: var(--success); width: 0%; transition: 1s; }
         .result-text { position: absolute; width: 100%; text-align: center; font-size: 0.8rem; font-weight: bold; top: 4px; z-index: 1; }
+        
+        /* ALERT BOX STYLE */
+        #alert-box {
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            max-width: 300px;
+        }
+        .custom-alert {
+            background: white; border-left: 5px solid var(--secondary);
+            padding: 15px; margin-bottom: 10px; border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
     </style>
 </head>
 <body>
 
+    <div id="alert-box"></div>
     <div id="pull-tab" onclick="toggleMenu()">MENU ▼</div>
 
     <nav id="menu-top">
@@ -299,12 +309,12 @@
         };
 
         const secoes = [
-            {id: 'msg', tit: '📢 Recados e Eventos', color: 'var(--info)', hasStatus: true, fields: [{id:'msgn', p:'Título'}, {id:'msgd', p:'Data'}]},
-            {id: 'as', tit: '👥 Associados', color: 'var(--primary)', hasStatus: true, fields: [{id:'asn', p:'Nome'}, {id:'asm', p:'Nº Matrícula'}, {id:'asd', p:'Nascimento'}, {id:'asl', p:'Link Drive'}]},
+            {id: 'msg', tit: '📢 Recados e Eventos', color: 'var(--info)', hasStatus: true, fields: [{id:'msgn', p:'Título'}, {id:'msgd', p:'Data (DD/MM/AAAA)'}]},
+            {id: 'as', tit: '👥 Associados', color: 'var(--primary)', hasStatus: true, fields: [{id:'asn', p:'Nome'}, {id:'asm', p:'Nº Matrícula'}, {id:'asd', p:'Nascimento (DD/MM/AAAA)'}, {id:'asl', p:'Link Drive'}]},
             {id: 'dc', tit: '📂 Documentos Gerais', color: 'var(--notes)', fields: [{id:'dcn', p:'Nome'}, {id:'dcl', p:'Link'}]},
             {id: 'at', tit: '📜 Livro de atas', color: '#8e44ad', fields: [{id:'atn', p:'Título'}, {id:'atd', p:'Data'}, {id:'atl', p:'Link'}]},
             {id: 'pl', tit: '📝 Plano de Gestão', color: 'var(--warning)', hasStatus: true, fields: [{id:'pln', p:'Meta/Ação'}]},
-            {id: 'an', tit: '🎂 Aniversariantes', color: '#e91e63', fields: [{id:'ann', p:'Nome'}, {id:'and', p:'Dia/Mês'}]}
+            {id: 'an', tit: '🎂 Aniversariantes', color: '#e91e63', fields: [{id:'ann', p:'Nome'}, {id:'and', p:'Dia/Mês (DD/MM)'}]}
         ];
 
         function toggleMenu() { document.getElementById('menu-top').classList.toggle('active'); }
@@ -386,6 +396,61 @@
         function closePoll() { if(confirm("Revelar resultados?")) { db.poll.active = false; save(); renderPoll(); } }
         function resetPoll() { if(confirm("Limpar?")) { db.poll = null; save(); renderPoll(); } }
 
+        // --- SISTEMA DE DATAS E ALERTAS (CORRIGIDO) ---
+        function calculateDaysUntil(dateString, isFullDate = true) {
+            if (!dateString) return null;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Zera hora para comparação justa
+            
+            let target;
+            if (isFullDate) {
+                const parts = dateString.split('/');
+                if (parts.length !== 3) return null;
+                // Cria data no formato AAAA, MM-1, DD
+                target = new Date(parts[2], parts[1] - 1, parts[0]);
+                target.setHours(0, 0, 0, 0);
+            } else {
+                const parts = dateString.split('/');
+                if (parts.length !== 2) return null;
+                target = new Date(today.getFullYear(), parts[1] - 1, parts[0]);
+                target.setHours(0, 0, 0, 0);
+                // Se já passou este ano, joga para o próximo
+                if (target < today) target.setFullYear(today.getFullYear() + 1);
+            }
+
+            if (isNaN(target.getTime())) return null;
+            const diff = target.getTime() - today.getTime();
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+
+        function showAlert(msg, color) {
+            const box = document.getElementById('alert-box');
+            const div = document.createElement('div');
+            div.className = 'custom-alert';
+            div.style.borderLeftColor = color;
+            div.innerHTML = msg;
+            box.appendChild(div);
+            setTimeout(() => div.remove(), 8000);
+        }
+
+        function checkAlerts() {
+            const todayStr = new Date().toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'});
+            
+            // Check Birthdays
+            db.an.forEach(a => {
+                if(a.d === todayStr) showAlert(`🎂 Hoje é o aniversário de <b>${a.n}</b>! Parabéns!`, 'var(--secondary)');
+            });
+
+            // Check Events
+            db.msg.forEach(e => {
+                if(e.d) {
+                    const days = calculateDaysUntil(e.d, true);
+                    if(days === 3) showAlert(`📅 O evento <b>${e.n}</b> será daqui a 3 dias!`, 'var(--info)');
+                    if(days === 0) showAlert(`🚀 É HOJE: <b>${e.n}</b>!`, 'var(--success)');
+                }
+            });
+        }
+
         // --- SISTEMA CORE ---
         function save() { localStorage.setItem('cooper_master_v9', JSON.stringify(db)); }
         function init() {
@@ -404,12 +469,31 @@
                         </div>
                     </div>`;
             });
+            checkAlerts();
             render();
         }
+
         function render() {
             document.getElementById('d-saldo').innerText = `R$ ${db.s.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('d-socios').innerText = db.as.filter(x => x.st === 'Ativo').length;
             document.getElementById('d-metas').innerText = db.pl.filter(x => x.st !== 'Inativo').length;
+
+            const agora = new Date();
+            const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1).getTime();
+            
+            let entradas = 0, saidas = 0;
+            db.hist.forEach(h => {
+                if(h.t >= inicioMes) {
+                    if(h.v > 0) entradas += h.v;
+                    else saidas += Math.abs(h.v);
+                }
+            });
+
+            document.getElementById('m-in').innerText = `R$ ${entradas.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('m-out').innerText = `R$ ${saidas.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('m-bal').innerText = `R$ ${(entradas - saidas).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('m-bal').style.color = (entradas - saidas) >= 0 ? 'var(--success)' : 'var(--danger)';
+            
             secoes.forEach(s => {
                 const l = document.getElementById('l-'+s.id);
                 if(!l) return;
@@ -418,18 +502,33 @@
                 [...db[s.id]].sort((a, b) => b.time - a.time).forEach((item) => {
                     const realIdx = db[s.id].findIndex(x => x.time === item.time);
                     if (item.n.toLowerCase().includes(busca)) {
+                        
+                        let countdownText = "";
+                        if(s.id === 'an' && item.d) {
+                            const d = calculateDaysUntil(item.d, false);
+                            countdownText = `<br><small style="color:var(--secondary)">Faltam ${d} dias</small>`;
+                        }
+                        if(s.id === 'msg' && item.d) {
+                            const d = calculateDaysUntil(item.d, true);
+                            if(d === null) countdownText = "";
+                            else if(d < 0) countdownText = `<br><small style="color:var(--notes)">Já passou</small>`;
+                            else if(d === 0) countdownText = `<br><small style="color:var(--success)"><b>É HOJE!</b></small>`;
+                            else countdownText = `<br><small style="color:var(--info)">Faltam ${d} dias</small>`;
+                        }
+
                         l.innerHTML += `<li class="${item.pinned ? 'pinned' : ''}">
                             <div style="display:flex; align-items:center">
-                                <button class="btn-pin" onclick="togglePin('${s.id}', ${realIdx})">${item.pinned ? '★' : '☆'}</button>
-                                <div><b>${item.n}</b><br><small>${item.d || ''}</small></div>
+                                <button class="btn-pin" style="background:none; border:none; cursor:pointer; color:var(--warning)" onclick="togglePin('${s.id}', ${realIdx})">${item.pinned ? '★' : '☆'}</button>
+                                <div><b>${item.n}</b><br><small>${item.d || ''}</small>${countdownText}</div>
                             </div>
-                            <button class="btn-del" onclick="rem('${s.id}', ${realIdx})">×</button>
+                            <button onclick="rem('${s.id}', ${realIdx})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:1.2rem;">×</button>
                         </li>`;
                     }
                 });
             });
             save();
         }
+
         function add(sid) {
             let n = document.getElementById(sid+'n')?.value;
             if(!n) return;
@@ -438,8 +537,16 @@
                 let input = document.getElementById(f.id);
                 if(input) { obj[f.id.slice(-1)] = input.value; input.value = ''; }
             });
-            db[sid].push(obj); render();
+            
+            db[sid].push(obj);
+
+            if(sid === 'as' && obj.d) {
+                const dataAniv = obj.d.split('/').slice(0,2).join('/');
+                db.an.push({ n: obj.n, d: dataAniv, time: new Date().getTime() + 1 });
+            }
+            render();
         }
+
         function f(t) { 
             const v = parseFloat(document.getElementById('vfin').value); 
             if(!v) return;
