@@ -286,7 +286,7 @@
         function showPage(p) { document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); document.getElementById(p).classList.add('active'); toggleMenu(); window.scrollTo(0,0); if(p === 'votacao') renderPoll(); }
         function toggleCard(el) { el.parentElement.classList.toggle('active'); }
 
-        // LÓGICA DE VOTAÇÃO
+        // LÓGICA DE VOTAÇÃO (ALTERADA PARA VOTO SECRETO)
         function addPollOption() {
             const container = document.getElementById('poll-options-container');
             const input = document.createElement('input');
@@ -314,25 +314,36 @@
             
             db.poll.options.forEach((opt, idx) => {
                 const percent = db.poll.total > 0 ? Math.round((opt.votes / db.poll.total) * 100) : 0;
+                
                 if(db.poll.active) {
-                    html += `<button class="vote-option-btn" onclick="vote(${idx})">${opt.text} <span>${opt.votes}</span></button>`;
+                    // MODO VOTO SECRETO: Não exibe números enquanto ativo
+                    html += `<button class="vote-option-btn" onclick="vote(${idx})">${opt.text} <i class="fa-solid fa-check-to-slot" style="opacity:0.3"></i></button>`;
                 } else {
-                    html += `<div style="margin-bottom:10px"><b>${opt.text}</b> (${opt.votes})
+                    // MODO RESULTADO: Exibe barras e números após encerramento
+                    html += `<div style="margin-bottom:10px"><b>${opt.text}</b> (${opt.votes} votos)
                         <div class="result-bar-container"><div class="result-bar-fill" style="width:${percent}%"></div><div class="result-text">${percent}%</div></div>
                     </div>`;
                 }
             });
 
             if(db.poll.active) {
-                html += `<button class="btn-main" style="background:var(--danger); margin-top:20px" onclick="closePoll()">Encerrar Assembleia</button>`;
+                html += `
+                <p style="text-align:center; font-size:0.8rem; color:var(--notes); margin-top:10px">
+                    <i class="fa-solid fa-lock"></i> Votos ocultos para garantir a imparcialidade.
+                </p>
+                <button class="btn-main" style="background:var(--danger); margin-top:20px" onclick="closePoll()">Encerrar Assembleia e Ver Resultado</button>`;
             } else {
-                html += `<button class="btn-main" style="background:var(--notes); margin-top:20px" onclick="resetPoll()">Nova Assembleia</button>`;
+                html += `
+                <div style="background:#f0f9eb; padding:10px; border-radius:8px; text-align:center; margin-top:10px">
+                    <b>Total da Assembleia: ${db.poll.total} votos</b>
+                </div>
+                <button class="btn-main" style="background:var(--notes); margin-top:20px" onclick="resetPoll()">Nova Assembleia</button>`;
             }
             container.innerHTML = html + `</div></div>`;
         }
 
         function vote(idx) { db.poll.options[idx].votes++; db.poll.total++; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); }
-        function closePoll() { if(confirm("Encerrar a votação?")) { db.poll.active = false; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); } }
+        function closePoll() { if(confirm("Encerrar a votação e revelar os resultados?")) { db.poll.active = false; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); } }
         function resetPoll() { if(confirm("Limpar votação atual e criar nova?")) { db.poll = null; renderPoll(); localStorage.setItem('cooper_master_v6', JSON.stringify(db)); } }
 
         // RESTO DO CÓDIGO ORIGINAL
